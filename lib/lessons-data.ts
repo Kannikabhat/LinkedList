@@ -78,16 +78,18 @@ export const lessons: Lesson[] = [
         content: `Arrays have several limitations that make them unsuitable for certain scenarios:
         
 **Array Limitations:**
-• Fixed size - once declared, size cannot be changed
-• Memory waste - allocated memory might not be fully utilized
-• Costly insertions/deletions - requires shifting elements
-• Contiguous memory requirement - large blocks might not be available
+
+- Fixed size – once declared, size cannot be changed
+- Memory waste – allocated memory might not be fully utilized
+- Costly insertions/deletions – requires shifting elements
+- Contiguous memory requirement – large blocks might not be available
 
 **Linked List Advantages:**
-• Dynamic size - grows and shrinks during runtime
-• Efficient insertions/deletions - O(1) at known positions
-• Memory efficient - allocates exactly what's needed
-• Flexible memory allocation - nodes can be scattered in memory`
+
+- Dynamic size – grows and shrinks during runtime
+- Efficient insertions/deletions – O(1) at known positions
+- Memory-efficient – allocates exactly what's needed
+- Flexible memory allocation – nodes can be scattered in memory`
       },
       {
         id: "intro-2",
@@ -96,9 +98,11 @@ export const lessons: Lesson[] = [
         content: `A **Linked List** is a linear data structure where elements (called nodes) are stored in sequence, but not in contiguous memory locations.
 
 **Key Components:**
-• **Node**: Contains data and a reference (pointer) to the next node
-• **Head**: Pointer to the first node in the list
-• **Null**: Last node points to null, indicating end of list
+
+- **Node**: Contains data and a reference (pointer) to the next node  
+- **Head**: Pointer to the first node in the list  
+- **Null**: Last node points to null, indicating end of list
+
 
 Each node is connected to the next one through pointers, forming a "chain" of data elements.`
       },
@@ -135,39 +139,42 @@ Each node is connected to the next one through pointers, forming a "chain" of da
         }
       },
       {
-        id: "intro-4",
-        type: "content",
-        title: "Array vs Linked List Comparison",
-        content: `| Feature | Array | Linked List |
-|---------|--------|-------------|
-| **Memory** | Contiguous | Non-contiguous |
-| **Size** | Fixed | Dynamic |
-| **Access Time** | O(1) random access | O(n) sequential access |
-| **Insertion/Deletion** | O(n) (shifting required) | O(1) at known position |
-| **Memory Overhead** | None | Extra pointer storage |
-| **Cache Performance** | Better (locality) | Poor (scattered nodes) |
-| **Memory Allocation** | Compile time | Runtime |`
+  id: "intro-4",
+  type: "content",
+  title: "Array vs Linked List Comparison",
+  content: `| Feature              | Array                              | Linked List                |
+|----------------------|------------------------------------|----------------------------|
+| **Memory**           | Contiguous                         | Non-contiguous             |
+| **Size**             | Fixed                              | Dynamic                    |
+| **Access Time**      | O(1) random access                 | O(n) sequential access     |
+| **Insertion/Deletion** | O(n) (shifting required)          | O(1) at known position     |
+| **Memory Overhead**  | None                               | Extra pointer storage      |
+| **Cache Performance**| Better (locality)                  | Poor (scattered nodes)     |
+| **Memory Allocation**| Compile time                       | Runtime                    |`,
       },
+
       {
         id: "intro-5",
         type: "content",
         title: "Types of Linked Lists",
-        content: `There are three main types of linked lists:
+        content: `**1. Singly Linked List**
 
-**1. Singly Linked List**
-• Each node has one pointer to the next node
-• Traversal is only possible in one direction (forward)
-• Most basic and commonly used type
+- Each node has one pointer to the next node
+- Traversal is only possible in one direction (forward)
+- Most basic and commonly used type
 
-**2. Doubly Linked List** 
-• Each node has two pointers: next and previous
-• Traversal is possible in both directions
-• Requires more memory but offers more flexibility
+**2. Doubly Linked List**
+
+- Each node has two pointers: next and previous
+- Traversal is possible in both directions
+- Requires more memory but offers more flexibility
 
 **3. Circular Linked List**
-• Last node points back to the first node (or head)
-• Can be singly or doubly linked
-• Useful for round-robin scheduling and circular buffers`
+
+- Last node points back to the first node (or head)
+- Can be singly or doubly linked
+- Useful for round-robin scheduling and circular buffers`,
+
       },
       {
         id: "intro-6",
