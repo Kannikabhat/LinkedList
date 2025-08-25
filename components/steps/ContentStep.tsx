@@ -2,6 +2,7 @@
 
 import { LessonStep } from '@/lib/lessons-data';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface ContentStepProps {
   step: LessonStep;
@@ -16,6 +17,7 @@ export default function ContentStep({ step }: ContentStepProps) {
       
       <div className="prose prose-lg max-w-none">
         <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
           components={{
             h1: ({ children }) => (
               <h1 className="text-2xl font-bold text-gray-900 mt-8 mb-4">{children}</h1>
