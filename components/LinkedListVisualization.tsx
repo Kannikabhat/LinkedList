@@ -302,6 +302,10 @@ export default function LinkedListVisualization({ nodes, pointers }: LinkedListV
               );
             }
 
+            if (!targetNode) {
+              return null;
+            }
+
             const x = targetNode.x;
             const y = targetNode.y - 60;
 
