@@ -739,40 +739,72 @@ class DoublyNode:
     description: "Understanding circular linked lists and their unique properties",
     steps: [
       {
-        id: "circular-1",
-        type: "content",
-        title: "Circular Linked List Concept",
-        content: `A **Circular Linked List** is a variation where the last node points back to the first node (head) instead of pointing to null.
+  id: "circular-1",
+  type: "content",
+  title: "Why Do We Need Circular Linked Lists?",
+  content: `
+Let's assume you are developing a board game like Ludo and you're using a linked list as your data structure to record each player's turn. 
+
+After the last player's turn, how does the first player get their turn again?
+
+In a **normal linked list**, the last node points to NULL. Once you reach the end, you must restart from the head if you want to traverse again. This is inefficient in cases where continuous looping is required. 
+
+What if the last node points to the first node instead? Wouldn't this be much more efficient?
+
+---
+
+**Other scenarios where a circular linked list is helpful:**
+
+- **Music Playlist (Loop Mode)** 🎵 → After the last song, the next should be the first again.  
+- **CPU Round-Robin Scheduling** ⚙️ → Processes are given time in a circular fashion.
+`
+},
+      {
+  id: "circular-1",
+  type: "content",
+  title: "Circular Linked List Concept",
+  content: `
+A **Circular Linked List** is a variation of a linked list where the last node points back to the first node (head) instead of pointing to null. This creates a continuous loop structure.
+
+---
 
 **Key Characteristics:**
-• No null pointers (except for empty list)
-• Can traverse infinitely in a loop
-• Can be singly or doubly circular
-• Often maintains a "tail" pointer for efficiency
+
+- No null pointers (except in the case of an empty list)  
+- Can be traversed infinitely in a loop  
+- Can be either singly circular or doubly circular  
+- Often maintains a "tail" pointer for efficiency  
+
+---
 
 **Important Considerations:**
-• Must be careful to avoid infinite loops during traversal
-• Insertion and deletion logic differs from regular lists
-• Useful for round-robin algorithms and circular buffers`
-      },
+
+- Must be careful to avoid infinite loops during traversal  
+- Insertion and deletion logic differs from regular linked lists  
+- Very useful for round-robin algorithms and circular buffers  
+`
+},
       {
-        id: "circular-2",
-        type: "visualization",
-        title: "Circular Structure",
-        visualization: {
-          nodes: [
-            { id: "c1", data: 10, next: "c2", x: 200, y: 100 },
-            { id: "c2", data: 20, next: "c3", x: 350, y: 150 },
-            { id: "c3", data: 30, next: "c4", x: 350, y: 300 },
-            { id: "c4", data: 40, next: "c1", x: 200, y: 350, isActive: true }
-          ],
-          pointers: [
-            { id: "head", label: "HEAD", targetNodeId: "c1", color: "#2563eb" },
-            { id: "tail", label: "TAIL", targetNodeId: "c4", color: "#16a34a" }
-          ],
-          message: "The last node (40) points back to the first node (10), forming a circle."
-        }
-      },
+  "id": "circular-2",
+  "type": "visualization",
+  "title": "Circular Structure",
+  "visualization": {
+    "nodes": [
+      { "id": "c1", "data": 10, "next": "c2", "x": 150, "y": 200 },
+      { "id": "c2", "data": 20, "next": "c3", "x": 300, "y": 200 },
+      { "id": "c3", "data": 30, "next": "c4", "x": 450, "y": 200 },
+      { "id": "c4", "data": 40, "next": "c1", "x": 600, "y": 200, "isActive": true }
+    ],
+    "pointers": [
+      { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+      { "id": "tail", "label": "TAIL", "targetNodeId": "c4", "color": "#16a34a" },
+
+    ],
+    "message": "The last node (40) points back to the first node (10), forming a circle."
+  }
+}
+
+,
       {
         id: "circular-mcq-1",
         type: "mcq",
@@ -790,91 +822,542 @@ class DoublyNode:
         }
       },
       {
-        id: "circular-3",
-        type: "visualization",
-        title: "Traversal with Termination",
-        code: [
-          "function traverse(head):",
-          "    if head == null: return",
-          "    current = head",
-          "    do:",
-          "        print(current.data)",
-          "        current = current.next",
-          "    while current != head"
-        ],
-        visualization: {
-          nodes: [
-            { id: "c1", data: 10, next: "c2", x: 300, y: 100, isActive: true },
-            { id: "c2", data: 20, next: "c3", x: 450, y: 200 },
-            { id: "c3", data: 30, next: "c4", x: 300, y: 300 },
-            { id: "c4", data: 40, next: "c1", x: 150, y: 200 }
-          ],
-          pointers: [
-            { id: "head", label: "HEAD", targetNodeId: "c1", color: "#2563eb" },
-            { id: "current", label: "CURRENT", targetNodeId: "c1", color: "#dc2626" }
-          ],
-          activeLineIndex: 3,
-          message: "Using do-while loop to ensure we visit each node exactly once, stopping when we return to head."
-        }
-      },
+  id: "circular-6",
+  type: "content",
+  title: "Operations in Circular Linked Lists",
+  content: `
+**Traversal**  
+- Move node by node until you come back to the head  
+
+---
+
+**Insertion**  
+- **At the beginning:** Insert before the head and adjust the last node's pointer  
+- **At the end:** Insert after the last node and link it back to the head  
+- **At the middle:** Insert between two nodes like in normal lists, but with extra pointer adjustments  
+
+---
+
+**Deletion**  
+- **At the beginning:** Update the head and fix the last node’s pointer  
+- **At the end:** Update the last node and fix the head’s pointer  
+- **At the middle:** Adjust the neighboring nodes' pointers to bypass the deleted node  
+`
+},
+            {
+  "id": "circular-3b",
+  "type": "visualization",
+  "title": "Circular Linked List Traversal (Straight Line View)",
+  "code": [
+    "function traverse(head):",
+    "    if head == null: return",
+    "    current = head",
+    "    do:",
+    "        print(current.data)",
+    "        current = current.next",
+    "    while current != head"
+  ],
+  "visualization": {
+    "nodes": [
+      { "id": "c1", "data": 10, "next": "c2", "x": 120, "y": 200, "isActive": true },
+      { "id": "c2", "data": 20, "next": "c3", "x": 280, "y": 200 },
+      { "id": "c3", "data": 30, "next": "c4", "x": 440, "y": 200 },
+      { "id": "c4", "data": 40, "next": "c1", "x": 600, "y": 200 }
+    ],
+    "pointers": [
+      { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+      { "id": "current", "label": "CURRENT", "targetNodeId": "c1", "color": "#dc2626" }
+    ],
+    "activeLineIndex": 3,
+    "message": "Start traversal from head. Since it's circular, we stop when current returns to head."
+  },
+  "executionSteps": [
+    {
+      "lineIndex": 0,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 120, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 280, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 440, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 600, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" }
+      ],
+      "message": "Initialize: head points to first node in the circular list"
+    },
+    {
+      "lineIndex": 2,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 120, "y": 200, "isActive": true },
+        { "id": "c2", "data": 20, "next": "c3", "x": 280, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 440, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 600, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c1", "color": "#dc2626" }
+      ],
+      "message": "Assign current = head",
+      "action": "assign"
+    },
+    {
+      "lineIndex": 4,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 120, "y": 200, "isActive": true },
+        { "id": "c2", "data": 20, "next": "c3", "x": 280, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 440, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 600, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c1", "color": "#dc2626" }
+      ],
+      "message": "Print current.data: 10",
+      "outputText": "10",
+      "action": "print"
+    },
+    {
+      "lineIndex": 5,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 120, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 280, "y": 200, "isActive": true },
+        { "id": "c3", "data": 30, "next": "c4", "x": 440, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 600, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c2", "color": "#dc2626" }
+      ],
+      "message": "Move current to next node",
+      "action": "traverse"
+    },
+    {
+      "lineIndex": 4,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 120, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 280, "y": 200, "isActive": true },
+        { "id": "c3", "data": 30, "next": "c4", "x": 440, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 600, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c2", "color": "#dc2626" }
+      ],
+      "message": "Print current.data: 20",
+      "outputText": "10, 20",
+      "action": "print"
+    },
+    {
+      "lineIndex": 5,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 120, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 280, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 440, "y": 200, "isActive": true },
+        { "id": "c4", "data": 40, "next": "c1", "x": 600, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c3", "color": "#dc2626" }
+      ],
+      "message": "Move current to next node",
+      "action": "traverse"
+    },
+    {
+      "lineIndex": 4,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 120, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 280, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 440, "y": 200, "isActive": true },
+        { "id": "c4", "data": 40, "next": "c1", "x": 600, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c3", "color": "#dc2626" }
+      ],
+      "message": "Print current.data: 30",
+      "outputText": "10, 20, 30",
+      "action": "print"
+    },
+    {
+      "lineIndex": 5,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 120, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 280, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 440, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 600, "y": 200, "isActive": true }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c4", "color": "#dc2626" }
+      ],
+      "message": "Move current to next node",
+      "action": "traverse"
+    },
+    {
+      "lineIndex": 4,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 120, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 280, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 440, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 600, "y": 200, "isActive": true }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c4", "color": "#dc2626" }
+      ],
+      "message": "Print current.data: 40",
+      "outputText": "10, 20, 30, 40",
+      "action": "print"
+    },
+    {
+      "lineIndex": 6,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 120, "y": 200, "isActive": true },
+        { "id": "c2", "data": 20, "next": "c3", "x": 280, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 440, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 600, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c1", "color": "#dc2626" }
+      ],
+      "message": "current == head, stop traversal",
+      "condition": false,
+      "action": "check"
+    }
+  ]
+}
+
+,
       {
-        id: "circular-4",
-        type: "visualization",
-        title: "Insertion at End",
-        code: [
-          "function insertAtEnd(tail, value):",
-          "    newNode = create new Node(value)",
-          "    if tail == null:",
-          "        newNode.next = newNode",
-          "        return newNode",
-          "    newNode.next = tail.next",
-          "    tail.next = newNode",
-          "    return newNode  // new tail"
-        ],
-        visualization: {
-          nodes: [
-            { id: "c1", data: 10, next: "c2", x: 300, y: 100 },
-            { id: "c2", data: 20, next: "c3", x: 450, y: 200 },
-            { id: "c3", data: 30, next: "new", x: 300, y: 300 },
-            { id: "new", data: 40, next: "c1", x: 150, y: 200, isTarget: true }
-          ],
-          pointers: [
-            { id: "tail", label: "TAIL", targetNodeId: "new", color: "#16a34a" },
-            { id: "newNode", label: "NEW", targetNodeId: "new", color: "#dc2626" }
-          ],
-          activeLineIndex: 6,
-          message: "New node is inserted after current tail, and becomes the new tail."
-        }
-      },
-      {
-        id: "circular-5",
-        type: "content",
-        title: "Applications & Use Cases",
-        content: `**Real-world Applications:**
+  "id": "circular-4-straight",
+  "type": "visualization",
+  "title": "Insertion at End in Circular Singly Linked List",
+  "code": [
+    "function insertEnd(head, data):",
+    "    newNode = Node(data)",
+    "    if head == null:",
+    "        head = newNode",
+    "        newNode.next = head",
+    "        return head",
+    "    current = head",
+    "    while current.next != head:",
+    "        current = current.next",
+    "    current.next = newNode",
+    "    newNode.next = head",
+    "    return head"
+  ],
+  "visualization": {
+    "nodes": [
+      { "id": "c1", "data": 10, "next": "c2", "x": 100, "y": 200 },
+      { "id": "c2", "data": 20, "next": "c3", "x": 250, "y": 200 },
+      { "id": "c3", "data": 30, "next": "c4", "x": 400, "y": 200 },
+      { "id": "c4", "data": 40, "next": "c1", "x": 550, "y": 200 }
+    ],
+    "pointers": [
+      { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+      { "id": "current", "label": "CURRENT", "targetNodeId": null, "color": "#dc2626" }
+    ],
+    "activeLineIndex": 1,
+    "message": "We want to insert user input (50) at the end of the circular list."
+  },
+  "executionSteps": [
+    {
+      "lineIndex": 1,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 100, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 250, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 400, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 550, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" }
+      ],
+      "message": "Create newNode with user input data = 50"
+    },
+    {
+      "lineIndex": 6,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 100, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 250, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 400, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 550, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c1", "color": "#dc2626" }
+      ],
+      "message": "Set current = head"
+    },
+    {
+      "lineIndex": 7,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 100, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 250, "y": 200, "isActive": true },
+        { "id": "c3", "data": 30, "next": "c4", "x": 400, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 550, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c2", "color": "#dc2626" }
+      ],
+      "message": "Move current to next (20)"
+    },
+    {
+      "lineIndex": 7,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 100, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 250, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 400, "y": 200, "isActive": true },
+        { "id": "c4", "data": 40, "next": "c1", "x": 550, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c3", "color": "#dc2626" }
+      ],
+      "message": "Move current to next (30)"
+    },
+    {
+      "lineIndex": 7,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 100, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 250, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 400, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 550, "y": 200, "isActive": true }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c4", "color": "#dc2626" }
+      ],
+      "message": "Move current to next (40)"
+    },
+    {
+      "lineIndex": 9,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 100, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 250, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 400, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c5", "x": 550, "y": 200 },
+        { "id": "c5", "data": 50, "next": "c1", "x": 700, "y": 200, "isActive": true }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c4", "color": "#dc2626" }
+      ],
+      "message": "Insert newNode (50) after current (40) and link newNode.next = head"
+    }
+  ]
+},
 
-**1. Round-Robin CPU Scheduling**
-• OS allocates CPU time to processes in circular fashion
-• Each process gets equal time slice
-• After last process, returns to first process
+{
+  "id": "circular-del-end",
+  "type": "visualization",
+  "title": "Deletion at End in Circular Singly Linked List",
+  "code": [
+    "function deleteEnd(head):",
+    "    if head == null:",
+    "        return null",
+    "    if head.next == head:", 
+    "        return null   # only one node",
+    "    current = head",
+    "    while current.next.next != head:",
+    "        current = current.next",
+    "    current.next = head",
+    "    return head"
+  ],
+  "visualization": {
+    "nodes": [
+      { "id": "c1", "data": 10, "next": "c2", "x": 180, "y": 200 },
+      { "id": "c2", "data": 20, "next": "c3", "x": 340, "y": 200 },
+      { "id": "c3", "data": 30, "next": "c4", "x": 500, "y": 200 },
+      { "id": "c4", "data": 40, "next": "c1", "x": 660, "y": 200 }
+    ],
+    "pointers": [
+      { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+      { "id": "current", "label": "CURRENT", "targetNodeId": null, "color": "#dc2626" }
+    ],
+    "activeLineIndex": 1,
+    "message": "We want to delete the last node (40) from the circular list."
+  },
+  "executionSteps": [
+    {
+      "lineIndex": 6,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 180, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 340, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 500, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 660, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c1", "color": "#dc2626" }
+      ],
+      "message": "Start with current = head (10)."
+    },
+    {
+      "lineIndex": 7,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 180, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 340, "y": 200, "isActive": true },
+        { "id": "c3", "data": 30, "next": "c4", "x": 500, "y": 200 },
+        { "id": "c4", "data": 40, "next": "c1", "x": 660, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c2", "color": "#dc2626" }
+      ],
+      "message": "Move current to next (20)."
+    },
+    {
+      "lineIndex": 7,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 180, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 340, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c4", "x": 500, "y": 200, "isActive": true },
+        { "id": "c4", "data": 40, "next": "c1", "x": 660, "y": 200 }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c3", "color": "#dc2626" }
+      ],
+      "message": "Move current to next (30). Now current.next.next = head, so stop."
+    },
+    {
+      "lineIndex": 9,
+      "nodes": [
+        { "id": "c1", "data": 10, "next": "c2", "x": 180, "y": 200 },
+        { "id": "c2", "data": 20, "next": "c3", "x": 340, "y": 200 },
+        { "id": "c3", "data": 30, "next": "c1", "x": 500, "y": 200, "isActive": true }
+      ],
+      "pointers": [
+        { "id": "head", "label": "HEAD", "targetNodeId": "c1", "color": "#2563eb" },
+        { "id": "current", "label": "CURRENT", "targetNodeId": "c3", "color": "#dc2626" }
+      ],
+      "message": "Set current.next = head. Node (40) is removed from the list."
+    }
+  ]
+},
+{
+  id: "circular-5",
+  type: "content",
+  title: "Why Do We Need Circular Doubly Linked Lists?",
+  content: `
+Consider you are using a circular linked list as the data structure for your music playlist. After the playlist finishes, it starts again from the beginning.  
 
-**2. Multiplayer Games**
-• Turn-based games where players take turns
-• After last player's turn, returns to first player
-• Examples: Board games, card games
+Now, imagine you want to go to the **previous song**. In a regular circular singly linked list, you would have to traverse the entire list from the head to reach the last node. This is inefficient.  
 
-**3. Circular Buffers**
-• Fixed-size buffers that wrap around
-• Used in data streaming, audio/video processing
-• When buffer is full, new data overwrites oldest
+What if you had a pointer to the previous song directly?  
+This is where **Circular Doubly Linked Lists** become useful. They allow traversal in both directions, making it easy to move to the previous song without starting from the head.  
+`
+}
 
-**4. Music/Video Playlists**
-• Continuous playback that loops back to beginning
-• "Repeat All" functionality in media players
 
-**5. Memory Management**
-• Circular buffer allocation in embedded systems
-• Cache replacement algorithms`
-      }
+,
+{
+  id: "circular-7",
+  type: "content",
+  title: "Structure of Circular Doubly Linked List",
+  content: `
+In a **Circular Doubly Linked List (CDLL)**, each node contains the following:
+
+- **Data**  
+- A pointer to the **next** node  
+- A pointer to the **previous** node  
+
+---
+
+**Special Properties:**
+
+- The head node's **prev** pointer connects to the last node  
+- The last node's **next** pointer connects back to the head  
+- Traversal can continue endlessly in **both directions**  
+`
+}
+,
+{
+  id: "circular-8",
+  type: "content",
+  title: "Traversal in CDLL",
+  content: `
+**Scenario:** Imagine browsing songs in a media player 🎶.  
+
+- Going to the **next** song → follow the **next** pointer  
+- Going to the **previous** song → follow the **prev** pointer  
+- After the **last** song → **next** brings you back to the first  
+- Before the **first** song → **prev** takes you to the last  
+
+---
+
+**Important Note:**  
+Traversal in a Circular Doubly Linked List must stop once you reach the starting node again, otherwise you will end up in an infinite loop.  
+`
+},
+
+{
+  id: "circular-12",
+  type: "content",
+  title: "Advantages and Disadvantages of CDLL",
+  content: `
+**Advantages**
+
+**Circular Singly Linked List (CSLL):**  
+- Efficient for continuous traversal (no need to restart from head)  
+- Naturally supports round-robin algorithms  
+- Can represent circular data structures like buffers, playlists, or game turns  
+
+**Circular Doubly Linked List (CDLL):**  
+- Easy traversal in both directions  
+- Efficient insertion and deletion at any position  
+- Naturally supports continuous looping  
+
+---
+
+**Disadvantages**
+
+**Circular Singly Linked List (CSLL):**  
+- More complex insertion and deletion logic compared to normal lists  
+- Risk of infinite loops if termination conditions are wrong  
+- Does not support backward traversal  
+
+**Circular Doubly Linked List (CDLL):**  
+- More complex than a singly circular linked list  
+- Requires extra memory for the **prev** pointer  
+- Care is needed to avoid infinite loops during traversal  
+`
+},
+
+{
+  id: "circular-5",
+  type: "content",
+  title: "Applications & Use Cases",
+  content: `
+**Real-World Applications**
+
+**1. Round-Robin CPU Scheduling**  
+- The operating system allocates CPU time to processes in a circular fashion  
+- Each process gets an equal time slice  
+- After the last process, control returns to the first process  
+
+**2. Multiplayer Games**  
+- Turn-based games where players take turns in sequence  
+- After the last player's turn, it goes back to the first player  
+- Examples: Board games, card games  
+
+**3. Circular Buffers**  
+- Fixed-size buffers that wrap around when full  
+- Commonly used in data streaming, audio/video processing  
+- When the buffer is full, new data overwrites the oldest data  
+
+**4. Music/Video Playlists**  
+- Supports continuous playback that loops back to the beginning  
+- Used in "Repeat All" functionality in media players  
+
+**5. Memory Management**  
+- Circular buffer allocation in embedded systems  
+- Cache replacement algorithms for efficient memory usage  
+`
+}
+
     ]
   },
   {
