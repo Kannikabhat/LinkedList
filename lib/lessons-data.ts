@@ -76,7 +76,7 @@ export const lessons: Lesson[] = [
         type: "content",
         title: "Why Linked Lists?",
         content: `Arrays have several limitations that make them unsuitable for certain scenarios:
-        
+
 **Array Limitations:**
 
 - Fixed size – once declared, size cannot be changed
@@ -99,10 +99,9 @@ export const lessons: Lesson[] = [
 
 **Key Components:**
 
-- **Node**: Contains data and a reference (pointer) to the next node  
-- **Head**: Pointer to the first node in the list  
+- **Node**: Contains data and a reference (pointer) to the next node
+- **Head**: Pointer to the first node in the list
 - **Null**: Last node points to null, indicating end of list
-
 
 Each node is connected to the next one through pointers, forming a "chain" of data elements.`
       },
@@ -579,9 +578,9 @@ class Node:
         title: "Node Structure",
         content: `A doubly linked list node contains three parts:
 
-**Data Field**: Stores the actual data
-**Next Pointer**: Points to the next node in the sequence
-**Previous Pointer**: Points to the previous node in the sequence
+- **Data Field**: Stores the actual data
+- **Next Pointer**: Points to the next node in the sequence
+- **Previous Pointer**: Points to the previous node in the sequence
 
 **Node Definition (Pseudocode):**
 \`\`\`
@@ -597,9 +596,10 @@ class DoublyNode:
 \`\`\`
 
 **Advantages:**
-• Bidirectional traversal
-• Efficient deletion when node reference is known
-• Better for certain algorithms (like LRU cache)`
+
+- Bidirectional traversal
+- Efficient deletion when node reference is known
+- Better for certain algorithms (like LRU cache)`
       },
       {
         id: "doubly-2",
@@ -720,23 +720,24 @@ class DoublyNode:
         type: "content",
         title: "Comparison & Use Cases",
         content: `**Memory Overhead:**
-• Singly Linked List: 1 pointer per node
-• Doubly Linked List: 2 pointers per node (50% more memory)
+
+- Singly Linked List: 1 pointer per node
+- Doubly Linked List: 2 pointers per node (50% more memory)
 
 **Performance Comparison:**
 
-| Operation | Singly LL | Doubly LL |
-|-----------|-----------|-----------|
-| **Forward Traversal** | O(n) | O(n) |
-| **Backward Traversal** | Not Possible | O(n) |
-| **Delete with Node Ref** | O(n) | O(1) |
-| **Insert Before Node** | O(n) | O(1) |
+| Operation                | Singly LL      | Doubly LL   |
+|--------------------------|---------------|-------------|
+| **Forward Traversal**    | O(n)          | O(n)        |
+| **Backward Traversal**   | Not Possible  | O(n)        |
+| **Delete with Node Ref** | O(n)          | O(1)        |
+| **Insert Before Node**   | O(n)          | O(1)        |
 
 **Common Use Cases:**
-• **Browser History**: Forward/back navigation
-• **Music Playlists**: Previous/next song functionality  
-• **LRU Cache**: Move items between head and tail
-• **Undo/Redo Operations**: Navigate through command history`
+- **Browser History**: Forward/back navigation
+- **Music Playlists**: Previous/next song functionality
+- **LRU Cache**: Move items between head and tail
+- **Undo/Redo Operations**: Navigate through command history`
       }
     ]
   },
