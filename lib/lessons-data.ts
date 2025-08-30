@@ -56,6 +56,11 @@ export interface LessonStep {
   visualization?: VisualizationStep;
   executionSteps?: ExecutionStep[];
   mcq?: MCQ;
+  chatbot?: {
+    question: string;
+    hint?: string;
+    context?: string;
+  }[];
 }
 
 export interface Lesson {
@@ -78,16 +83,18 @@ export const lessons: Lesson[] = [
         content: `Arrays have several limitations that make them unsuitable for certain scenarios:
         
 **Array Limitations:**
-• Fixed size - once declared, size cannot be changed
-• Memory waste - allocated memory might not be fully utilized
-• Costly insertions/deletions - requires shifting elements
-• Contiguous memory requirement - large blocks might not be available
+
+- Fixed size – once declared, size cannot be changed
+- Memory waste – allocated memory might not be fully utilized
+- Costly insertions/deletions – requires shifting elements
+- Contiguous memory requirement – large blocks might not be available
 
 **Linked List Advantages:**
-• Dynamic size - grows and shrinks during runtime
-• Efficient insertions/deletions - O(1) at known positions
-• Memory efficient - allocates exactly what's needed
-• Flexible memory allocation - nodes can be scattered in memory`
+
+- Dynamic size – grows and shrinks during runtime
+- Efficient insertions/deletions – O(1) at known positions
+- Memory-efficient – allocates exactly what's needed
+- Flexible memory allocation – nodes can be scattered in memory`
       },
       {
         id: "intro-2",
@@ -96,9 +103,11 @@ export const lessons: Lesson[] = [
         content: `A **Linked List** is a linear data structure where elements (called nodes) are stored in sequence, but not in contiguous memory locations.
 
 **Key Components:**
-• **Node**: Contains data and a reference (pointer) to the next node
-• **Head**: Pointer to the first node in the list
-• **Null**: Last node points to null, indicating end of list
+
+- **Node**: Contains data and a reference (pointer) to the next node  
+- **Head**: Pointer to the first node in the list  
+- **Null**: Last node points to null, indicating end of list
+
 
 Each node is connected to the next one through pointers, forming a "chain" of data elements.`
       },
@@ -135,39 +144,42 @@ Each node is connected to the next one through pointers, forming a "chain" of da
         }
       },
       {
-        id: "intro-4",
-        type: "content",
-        title: "Array vs Linked List Comparison",
-        content: `| Feature | Array | Linked List |
-|---------|--------|-------------|
-| **Memory** | Contiguous | Non-contiguous |
-| **Size** | Fixed | Dynamic |
-| **Access Time** | O(1) random access | O(n) sequential access |
-| **Insertion/Deletion** | O(n) (shifting required) | O(1) at known position |
-| **Memory Overhead** | None | Extra pointer storage |
-| **Cache Performance** | Better (locality) | Poor (scattered nodes) |
-| **Memory Allocation** | Compile time | Runtime |`
+  id: "intro-4",
+  type: "content",
+  title: "Array vs Linked List Comparison",
+  content: `| Feature              | Array                              | Linked List                |
+|----------------------|------------------------------------|----------------------------|
+| **Memory**           | Contiguous                         | Non-contiguous             |
+| **Size**             | Fixed                              | Dynamic                    |
+| **Access Time**      | O(1) random access                 | O(n) sequential access     |
+| **Insertion/Deletion** | O(n) (shifting required)          | O(1) at known position     |
+| **Memory Overhead**  | None                               | Extra pointer storage      |
+| **Cache Performance**| Better (locality)                  | Poor (scattered nodes)     |
+| **Memory Allocation**| Compile time                       | Runtime                    |`,
       },
+
       {
         id: "intro-5",
         type: "content",
         title: "Types of Linked Lists",
-        content: `There are three main types of linked lists:
+        content: `**1. Singly Linked List**
 
-**1. Singly Linked List**
-• Each node has one pointer to the next node
-• Traversal is only possible in one direction (forward)
-• Most basic and commonly used type
+- Each node has one pointer to the next node
+- Traversal is only possible in one direction (forward)
+- Most basic and commonly used type
 
-**2. Doubly Linked List** 
-• Each node has two pointers: next and previous
-• Traversal is possible in both directions
-• Requires more memory but offers more flexibility
+**2. Doubly Linked List**
+
+- Each node has two pointers: next and previous
+- Traversal is possible in both directions
+- Requires more memory but offers more flexibility
 
 **3. Circular Linked List**
-• Last node points back to the first node (or head)
-• Can be singly or doubly linked
-• Useful for round-robin scheduling and circular buffers`
+
+- Last node points back to the first node (or head)
+- Can be singly or doubly linked
+- Useful for round-robin scheduling and circular buffers`,
+
       },
       {
         id: "intro-6",
@@ -458,7 +470,80 @@ class Node:
           ],
           activeLineIndex: 2,
           message: "New node is created and linked to the current head. Head pointer is updated."
-        }
+        },
+        executionSteps: [
+          {
+            lineIndex: 0,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 200, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 350, y: 150 },
+              { id: "n3", data: 15, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" }
+            ],
+            message: "Starting with existing list. Need to insert value 3 at beginning."
+          },
+          {
+            lineIndex: 1,
+            nodes: [
+              { id: "new", data: 3, next: null, x: 50, y: 100, isTarget: true },
+              { id: "n1", data: 5, next: "n2", x: 200, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 350, y: 150 },
+              { id: "n3", data: 15, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Create new node with value 3",
+            action: "insert"
+          },
+          {
+            lineIndex: 2,
+            nodes: [
+              { id: "new", data: 3, next: "n1", x: 50, y: 100, isTarget: true },
+              { id: "n1", data: 5, next: "n2", x: 200, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 350, y: 150 },
+              { id: "n3", data: 15, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Set newNode.next = head (linking new node to current first node)",
+            action: "assign"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "new", data: 3, next: "n1", x: 50, y: 100, isTarget: true },
+              { id: "n1", data: 5, next: "n2", x: 200, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 350, y: 150 },
+              { id: "n3", data: 15, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "new", color: "#2563eb" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Update head = newNode (new node becomes the first node)",
+            action: "assign"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "new", data: 3, next: "n1", x: 50, y: 100 },
+              { id: "n1", data: 5, next: "n2", x: 200, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 350, y: 150 },
+              { id: "n3", data: 15, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "new", color: "#2563eb" }
+            ],
+            message: "Return new head. Insertion at beginning complete!"
+          }
+        ]
+
       },
       {
         id: "singly-4",
@@ -488,7 +573,180 @@ class Node:
           ],
           activeLineIndex: 7,
           message: "Traversed to the last node and linking it to the new node."
-        }
+        },
+        executionSteps: [
+          {
+            lineIndex: 0,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" }
+            ],
+            message: "Starting with existing list. Need to insert value 25 at end."
+          },
+          {
+            lineIndex: 1,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 },
+              { id: "new", data: 25, next: null, x: 550, y: 150, isTarget: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Create new node with value 25",
+            action: "insert"
+          },
+          {
+            lineIndex: 2,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 },
+              { id: "new", data: 25, next: null, x: 550, y: 150, isTarget: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Check if head == null (false, list is not empty)",
+            condition: false,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150, isActive: true },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 },
+              { id: "new", data: 25, next: null, x: 550, y: 150, isTarget: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "current", label: "CURRENT", targetNodeId: "n1", color: "#dc2626" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Set current = head to start traversal",
+            action: "assign"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150, isActive: true },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 },
+              { id: "new", data: 25, next: null, x: 550, y: 150, isTarget: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "current", label: "CURRENT", targetNodeId: "n1", color: "#dc2626" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Check current.next != null (true, n1.next = n2)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150, isActive: true },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 },
+              { id: "new", data: 25, next: null, x: 550, y: 150, isTarget: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "current", label: "CURRENT", targetNodeId: "n2", color: "#dc2626" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Move current to next node",
+            action: "traverse"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150, isActive: true },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 },
+              { id: "new", data: 25, next: null, x: 550, y: 150, isTarget: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "current", label: "CURRENT", targetNodeId: "n2", color: "#dc2626" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Check current.next != null (true, n2.next = n3)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 15, next: null, x: 400, y: 150, isActive: true },
+              { id: "new", data: 25, next: null, x: 550, y: 150, isTarget: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "current", label: "CURRENT", targetNodeId: "n3", color: "#dc2626" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Move current to next node",
+            action: "traverse"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 15, next: null, x: 400, y: 150, isActive: true },
+              { id: "new", data: 25, next: null, x: 550, y: 150, isTarget: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "current", label: "CURRENT", targetNodeId: "n3", color: "#dc2626" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Check current.next != null (false, n3.next = null)",
+            condition: false,
+            action: "check"
+          },
+          {
+            lineIndex: 7,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 15, next: "new", x: 400, y: 150, isActive: true },
+              { id: "new", data: 25, next: null, x: 550, y: 150, isTarget: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "current", label: "CURRENT", targetNodeId: "n3", color: "#dc2626" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Set current.next = newNode (link last node to new node)",
+            action: "assign"
+          },
+          {
+            lineIndex: 8,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 15, next: "new", x: 400, y: 150 },
+              { id: "new", data: 25, next: null, x: 550, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" }
+            ],
+            message: "Return head. Insertion at end complete!"
+          }
+        ]
       },
       {
         id: "singly-5",
@@ -518,7 +776,104 @@ class Node:
           ],
           activeLineIndex: 6,
           message: "Found the node to delete (10). Linking previous node directly to next node."
-        }
+        },
+        executionSteps: [
+          {
+            lineIndex: 0,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" }
+            ],
+            message: "Starting deletion of value 10 from the list"
+          },
+          {
+            lineIndex: 1,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" }
+            ],
+            message: "Check if head.data == value (5 == 10? false)",
+            condition: false,
+            action: "check"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150, isActive: true },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "current", label: "CURRENT", targetNodeId: "n1", color: "#dc2626" }
+            ],
+            message: "Set current = head to start traversal",
+            action: "assign"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150, isActive: true },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "current", label: "CURRENT", targetNodeId: "n1", color: "#dc2626" }
+            ],
+            message: "Check current.next != null (true, n1.next = n2)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "n1", data: 5, next: "n2", x: 100, y: 150, isActive: true },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 150, isTarget: true },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "current", label: "CURRENT", targetNodeId: "n1", color: "#dc2626" }
+            ],
+            message: "Check current.next.data == value (10 == 10? true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "n1", data: 5, next: "n3", x: 100, y: 150, isActive: true },
+              { id: "n2", data: 10, next: "n3", x: 250, y: 100, isTarget: true },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "current", label: "CURRENT", targetNodeId: "n1", color: "#dc2626" }
+            ],
+            message: "Set current.next = current.next.next (bypass node to delete)",
+            action: "delete"
+          },
+          {
+            lineIndex: 7,
+            nodes: [
+              { id: "n1", data: 5, next: "n3", x: 100, y: 150 },
+              { id: "n3", data: 15, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" }
+            ],
+            message: "Return head. Node with value 10 successfully deleted!"
+          }
+        ]
       },
       {
         id: "singly-mcq-2",
@@ -653,7 +1008,110 @@ class DoublyNode:
           ],
           activeLineIndex: 4,
           message: "New node is linked to head, and head's prev pointer is updated to point back to new node."
-        }
+        },
+        executionSteps: [
+          {
+            lineIndex: 0,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 200, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 350, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "d1", color: "#2563eb" }
+            ],
+            message: "Starting with existing doubly linked list. Insert value 5 at beginning."
+          },
+          {
+            lineIndex: 1,
+            nodes: [
+              { id: "new", data: 5, next: null, prev: null, x: 50, y: 100, isTarget: true },
+              { id: "d1", data: 10, next: "d2", prev: null, x: 200, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 350, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "d1", color: "#2563eb" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Create new doubly linked node with value 5",
+            action: "insert"
+          },
+          {
+            lineIndex: 2,
+            nodes: [
+              { id: "new", data: 5, next: "d1", prev: null, x: 50, y: 100, isTarget: true },
+              { id: "d1", data: 10, next: "d2", prev: null, x: 200, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 350, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "d1", color: "#2563eb" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Set newNode.next = head (link new node forward)",
+            action: "assign"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "new", data: 5, next: "d1", prev: null, x: 50, y: 100, isTarget: true },
+              { id: "d1", data: 10, next: "d2", prev: null, x: 200, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 350, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "d1", color: "#2563eb" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Check if head != null (true, list is not empty)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "new", data: 5, next: "d1", prev: null, x: 50, y: 100, isTarget: true },
+              { id: "d1", data: 10, next: "d2", prev: "new", x: 200, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 350, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "d1", color: "#2563eb" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Set head.prev = newNode (link current head backward to new node)",
+            action: "assign"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "new", data: 5, next: "d1", prev: null, x: 50, y: 100, isTarget: true },
+              { id: "d1", data: 10, next: "d2", prev: "new", x: 200, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 350, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "new", color: "#2563eb" },
+              { id: "newNode", label: "NEW", targetNodeId: "new", color: "#16a34a" }
+            ],
+            message: "Update head = newNode (new node becomes the first node)",
+            action: "assign"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "new", data: 5, next: "d1", prev: null, x: 50, y: 100 },
+              { id: "d1", data: 10, next: "d2", prev: "new", x: 200, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 350, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "new", color: "#2563eb" }
+            ],
+            message: "Return new head. Doubly linked list insertion at beginning complete!"
+          }
+        ]
       },
       {
         id: "doubly-4",
@@ -681,7 +1139,107 @@ class DoublyNode:
           ],
           activeLineIndex: 2,
           message: "Node 20 is being deleted. Both prev and next pointers of adjacent nodes are updated."
-        }
+        },
+        executionSteps: [
+          {
+            lineIndex: 0,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150, isTarget: true },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "d1", color: "#2563eb" },
+              { id: "nodeToDelete", label: "DELETE", targetNodeId: "d2", color: "#dc2626" }
+            ],
+            message: "Starting deletion of node with value 20 (middle node)"
+          },
+          {
+            lineIndex: 1,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150, isTarget: true },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "d1", color: "#2563eb" },
+              { id: "nodeToDelete", label: "DELETE", targetNodeId: "d2", color: "#dc2626" }
+            ],
+            message: "Check if nodeToDelete.prev != null (true, has previous node)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 2,
+            nodes: [
+              { id: "d1", data: 10, next: "d3", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 100, isTarget: true },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "d1", color: "#2563eb" },
+              { id: "nodeToDelete", label: "DELETE", targetNodeId: "d2", color: "#dc2626" }
+            ],
+            message: "Set nodeToDelete.prev.next = nodeToDelete.next (link previous to next)",
+            action: "assign"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "d1", data: 10, next: "d3", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 100, isTarget: true },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "d1", color: "#2563eb" },
+              { id: "nodeToDelete", label: "DELETE", targetNodeId: "d2", color: "#dc2626" }
+            ],
+            message: "Check if nodeToDelete.next != null (true, has next node)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "d1", data: 10, next: "d3", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: null, prev: null, x: 300, y: 100, isTarget: true },
+              { id: "d3", data: 30, next: null, prev: "d1", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "d1", color: "#2563eb" },
+              { id: "nodeToDelete", label: "DELETE", targetNodeId: "d2", color: "#dc2626" }
+            ],
+            message: "Set nodeToDelete.next.prev = nodeToDelete.prev (link next to previous)",
+            action: "assign"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "d1", data: 10, next: "d3", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: null, prev: null, x: 300, y: 100, isTarget: true },
+              { id: "d3", data: 30, next: null, prev: "d1", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "d1", color: "#2563eb" },
+              { id: "nodeToDelete", label: "DELETE", targetNodeId: "d2", color: "#dc2626" }
+            ],
+            message: "Check if nodeToDelete == head (false, not deleting head)",
+            condition: false,
+            action: "check"
+          },
+          {
+            lineIndex: 7,
+            nodes: [
+              { id: "d1", data: 10, next: "d3", prev: null, x: 100, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d1", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "d1", color: "#2563eb" }
+            ],
+            message: "Node deletion complete! Node 20 removed from doubly linked list.",
+            action: "delete"
+          }
+        ]
       },
       {
         id: "doubly-5",
@@ -706,7 +1264,182 @@ class DoublyNode:
           ],
           activeLineIndex: 1,
           message: "Starting from tail, we can traverse backward using prev pointers."
-        }
+        },
+        executionSteps: [
+          {
+            lineIndex: 0,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "tail", label: "TAIL", targetNodeId: "d3", color: "#16a34a" }
+            ],
+            message: "Starting backward traversal from tail"
+          },
+          {
+            lineIndex: 1,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150, isActive: true }
+            ],
+            pointers: [
+              { id: "tail", label: "TAIL", targetNodeId: "d3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "d3", color: "#dc2626" }
+            ],
+            message: "Set current = tail",
+            action: "assign"
+          },
+          {
+            lineIndex: 2,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150, isActive: true }
+            ],
+            pointers: [
+              { id: "tail", label: "TAIL", targetNodeId: "d3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "d3", color: "#dc2626" }
+            ],
+            message: "Check current != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150, isActive: true }
+            ],
+            pointers: [
+              { id: "tail", label: "TAIL", targetNodeId: "d3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "d3", color: "#dc2626" }
+            ],
+            message: "Print current.data: 30",
+            outputText: "30",
+            action: "print"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150, isActive: true },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "tail", label: "TAIL", targetNodeId: "d3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "d2", color: "#dc2626" }
+            ],
+            message: "Move current to previous node",
+            action: "traverse"
+          },
+          {
+            lineIndex: 2,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150, isActive: true },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "tail", label: "TAIL", targetNodeId: "d3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "d2", color: "#dc2626" }
+            ],
+            message: "Check current != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150, isActive: true },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "tail", label: "TAIL", targetNodeId: "d3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "d2", color: "#dc2626" }
+            ],
+            message: "Print current.data: 20",
+            outputText: "30, 20",
+            action: "print"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150, isActive: true },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "tail", label: "TAIL", targetNodeId: "d3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "d1", color: "#dc2626" }
+            ],
+            message: "Move current to previous node",
+            action: "traverse"
+          },
+          {
+            lineIndex: 2,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150, isActive: true },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "tail", label: "TAIL", targetNodeId: "d3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "d1", color: "#dc2626" }
+            ],
+            message: "Check current != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150, isActive: true },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "tail", label: "TAIL", targetNodeId: "d3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "d1", color: "#dc2626" }
+            ],
+            message: "Print current.data: 10",
+            outputText: "30, 20, 10",
+            action: "print"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "tail", label: "TAIL", targetNodeId: "d3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: null, color: "#dc2626" }
+            ],
+            message: "Move current to previous node (null)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 2,
+            nodes: [
+              { id: "d1", data: 10, next: "d2", prev: null, x: 100, y: 150 },
+              { id: "d2", data: 20, next: "d3", prev: "d1", x: 300, y: 150 },
+              { id: "d3", data: 30, next: null, prev: "d2", x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "tail", label: "TAIL", targetNodeId: "d3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: null, color: "#dc2626" }
+            ],
+            message: "Check current != null (false) - Exit loop. Backward traversal complete!",
+            condition: false,
+            action: "check"
+          }
+        ]
       },
       {
         id: "doubly-6",
@@ -733,6 +1466,7 @@ class DoublyNode:
       }
     ]
   },
+     
   {
     id: 4,
     title: "Circular Linked List",
@@ -743,27 +1477,31 @@ class DoublyNode:
   type: "content",
   title: "Why Do We Need Circular Linked Lists?",
   content: `
-Let's assume you are developing a board game like Ludo and you're using a linked list as your data structure to record each player's turn. 
-
-After the last player's turn, how does the first player get their turn again?
+Let's assume you are developing a board game like Ludo and you're using a single linked list as your data structure to record each player's turn. 
 
 In a **normal linked list**, the last node points to NULL. Once you reach the end, you must restart from the head if you want to traverse again. This is inefficient in cases where continuous looping is required. 
 
-What if the last node points to the first node instead? Wouldn't this be much more efficient?
+In a **circular linked list**, however, the last node connects back to the first node. This makes it ideal for applications where you need continuous traversal, like cycling through players' turns in a game.
+`,
+  chatbot: [
+    {
+      question: "After the last player's turn, how does the first player get their turn again?",
+      context: "We are modeling player turns in Ludo using a linked list. In a normal linked list, traversal ends at NULL. In a circular linked list, traversal loops back to the head, so after the last node (last player), the next node is the first player again.",
+      hint: "Think about what happens when the last node points back to the head node."
+    }
+  ]
+}
 
----
-
-**Other scenarios where a circular linked list is helpful:**
-
-- **Music Playlist (Loop Mode)** 🎵 → After the last song, the next should be the first again.  
-- **CPU Round-Robin Scheduling** ⚙️ → Processes are given time in a circular fashion.
-`
-},
+,
       {
   id: "circular-1",
   type: "content",
   title: "Circular Linked List Concept",
   content: `
+What if the last node points to the first node instead? Wouldn't this be much more efficient?
+
+---
+
 A **Circular Linked List** is a variation of a linked list where the last node points back to the first node (head) instead of pointing to null. This creates a continuous loop structure.
 
 ---
@@ -782,6 +1520,12 @@ A **Circular Linked List** is a variation of a linked list where the last node p
 - Must be careful to avoid infinite loops during traversal  
 - Insertion and deletion logic differs from regular linked lists  
 - Very useful for round-robin algorithms and circular buffers  
+
+**Other scenarios where a circular linked list is helpful:**
+
+- **Music Playlist (Loop Mode)** 🎵 → After the last song, the next should be the first again.  
+- **CPU Round-Robin Scheduling** ⚙️ → Processes are given time in a circular fashion.
+
 `
 },
       {
@@ -1246,9 +1990,13 @@ Consider you are using a circular linked list as the data structure for your mus
 
 Now, imagine you want to go to the **previous song**. In a regular circular singly linked list, you would have to traverse the entire list from the head to reach the last node. This is inefficient.  
 
-What if you had a pointer to the previous song directly?  
-This is where **Circular Doubly Linked Lists** become useful. They allow traversal in both directions, making it easy to move to the previous song without starting from the head.  
-`
+`,
+chatbot: [
+    {
+      question: "Can you think of a solution to the above problem?",
+      context: "i am trying to explain why do we need circular doubly linked lists using this scenario: Consider you are using a circular linked list as the data structure for your music playlist. After the playlist finishes, it starts again from the beginning.  Now, imagine you want to go to the previous song. In a regular circular singly linked list, you would have to traverse the entire list from the head to reach the last node. This is inefficient. "
+    }
+  ]
 }
 
 
@@ -1257,7 +2005,9 @@ This is where **Circular Doubly Linked Lists** become useful. They allow travers
   id: "circular-7",
   type: "content",
   title: "Structure of Circular Doubly Linked List",
-  content: `
+  content: ` 
+This is where **Circular Doubly Linked Lists** become useful. They allow traversal in both directions, making it easy to move to the previous song without starting from the head.
+
 In a **Circular Doubly Linked List (CDLL)**, each node contains the following:
 
 - **Data**  
@@ -1357,9 +2107,9 @@ Traversal in a Circular Doubly Linked List must stop once you reach the starting
 - Cache replacement algorithms for efficient memory usage  
 `
 }
-
-    ]
+]
   },
+
   {
     id: 5,
     title: "Advanced Problems",
@@ -1421,7 +2171,321 @@ Each problem demonstrates important algorithmic patterns used in interviews.`
           ],
           activeLineIndex: 5,
           message: "Reversing pointers step by step. Current node now points to previous node."
-        }
+        },
+        executionSteps: [
+          {
+            lineIndex: 0,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 3, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" }
+            ],
+            message: "Starting reversal of linked list: 1 -> 2 -> 3 -> null"
+          },
+          {
+            lineIndex: 1,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 3, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: null, color: "#16a34a" }
+            ],
+            message: "Initialize prev = null",
+            action: "assign"
+          },
+          {
+            lineIndex: 2,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150, isActive: true },
+              { id: "n2", data: 2, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 3, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: null, color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n1", color: "#dc2626" }
+            ],
+            message: "Initialize current = head",
+            action: "assign"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150, isActive: true },
+              { id: "n2", data: 2, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 3, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: null, color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n1", color: "#dc2626" }
+            ],
+            message: "Check current != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150, isActive: true },
+              { id: "n2", data: 2, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 3, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: null, color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n1", color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: "n2", color: "#d97706" }
+            ],
+            message: "Store next = current.next (save reference before changing)",
+            action: "assign"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150, isActive: true },
+              { id: "n2", data: 2, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 3, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: null, color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n1", color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: "n2", color: "#d97706" }
+            ],
+            message: "Reverse: current.next = prev (point backward)",
+            action: "assign"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150, isActive: true },
+              { id: "n2", data: 2, next: "n3", x: 250, y: 150 },
+              { id: "n3", data: 3, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: "n1", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n1", color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: "n2", color: "#d97706" }
+            ],
+            message: "Move prev = current",
+            action: "assign"
+          },
+          {
+            lineIndex: 7,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n3", x: 250, y: 150, isActive: true },
+              { id: "n3", data: 3, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: "n1", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n2", color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: "n2", color: "#d97706" }
+            ],
+            message: "Move current = next",
+            action: "traverse"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n3", x: 250, y: 150, isActive: true },
+              { id: "n3", data: 3, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: "n1", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n2", color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: "n2", color: "#d97706" }
+            ],
+            message: "Check current != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n3", x: 250, y: 150, isActive: true },
+              { id: "n3", data: 3, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: "n1", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n2", color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: "n3", color: "#d97706" }
+            ],
+            message: "Store next = current.next",
+            action: "assign"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n1", x: 250, y: 150, isActive: true },
+              { id: "n3", data: 3, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: "n1", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n2", color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: "n3", color: "#d97706" }
+            ],
+            message: "Reverse: current.next = prev",
+            action: "assign"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n1", x: 250, y: 150, isActive: true },
+              { id: "n3", data: 3, next: null, x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: "n2", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n2", color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: "n3", color: "#d97706" }
+            ],
+            message: "Move prev = current",
+            action: "assign"
+          },
+          {
+            lineIndex: 7,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n1", x: 250, y: 150 },
+              { id: "n3", data: 3, next: null, x: 400, y: 150, isActive: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: "n2", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n3", color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: "n3", color: "#d97706" }
+            ],
+            message: "Move current = next",
+            action: "traverse"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n1", x: 250, y: 150 },
+              { id: "n3", data: 3, next: null, x: 400, y: 150, isActive: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: "n2", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n3", color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: "n3", color: "#d97706" }
+            ],
+            message: "Check current != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n1", x: 250, y: 150 },
+              { id: "n3", data: 3, next: null, x: 400, y: 150, isActive: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: "n2", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n3", color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: null, color: "#d97706" }
+            ],
+            message: "Store next = current.next (null)",
+            action: "assign"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n1", x: 250, y: 150 },
+              { id: "n3", data: 3, next: "n2", x: 400, y: 150, isActive: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: "n2", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n3", color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: null, color: "#d97706" }
+            ],
+            message: "Reverse: current.next = prev",
+            action: "assign"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n1", x: 250, y: 150 },
+              { id: "n3", data: 3, next: "n2", x: 400, y: 150, isActive: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: "n3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: "n3", color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: null, color: "#d97706" }
+            ],
+            message: "Move prev = current",
+            action: "assign"
+          },
+          {
+            lineIndex: 7,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n1", x: 250, y: 150 },
+              { id: "n3", data: 3, next: "n2", x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: "n3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: null, color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: null, color: "#d97706" }
+            ],
+            message: "Move current = next (null)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n1", x: 250, y: 150 },
+              { id: "n3", data: 3, next: "n2", x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "prev", label: "PREV", targetNodeId: "n3", color: "#16a34a" },
+              { id: "current", label: "CURRENT", targetNodeId: null, color: "#dc2626" },
+              { id: "next", label: "NEXT", targetNodeId: null, color: "#d97706" }
+            ],
+            message: "Check current != null (false) - Exit loop",
+            condition: false,
+            action: "check"
+          },
+          {
+            lineIndex: 8,
+            nodes: [
+              { id: "n1", data: 1, next: null, x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n1", x: 250, y: 150 },
+              { id: "n3", data: 3, next: "n2", x: 400, y: 150 }
+            ],
+            pointers: [
+              { id: "newHead", label: "NEW HEAD", targetNodeId: "n3", color: "#2563eb" }
+            ],
+            message: "Return prev as new head. List reversed: 3 -> 2 -> 1 -> null"
+          }
+        ]
       },
       {
         id: "advanced-mcq-1",
@@ -1468,7 +2532,387 @@ Each problem demonstrates important algorithmic patterns used in interviews.`
           ],
           activeLineIndex: 6,
           message: "Slow pointer moves 1 step, fast pointer moves 2 steps. They will meet if there's a cycle."
-        }
+        },
+        executionSteps: [
+          {
+            lineIndex: 0,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" }
+            ],
+            message: "Starting cycle detection using Floyd's algorithm (tortoise and hare)"
+          },
+          {
+            lineIndex: 1,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100, isActive: true },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n1", color: "#16a34a" }
+            ],
+            message: "Initialize slow = head",
+            action: "assign"
+          },
+          {
+            lineIndex: 2,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100, isActive: true },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n1", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n1", color: "#dc2626" }
+            ],
+            message: "Initialize fast = head",
+            action: "assign"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100, isActive: true },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n1", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n1", color: "#dc2626" }
+            ],
+            message: "Check fast != null and fast.next != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100, isActive: true },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n2", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n1", color: "#dc2626" }
+            ],
+            message: "Move slow = slow.next (1 step)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100, isActive: true },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n2", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n3", color: "#dc2626" }
+            ],
+            message: "Move fast = fast.next.next (2 steps)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100, isActive: true },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n2", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n3", color: "#dc2626" }
+            ],
+            message: "Check if slow == fast (false, continue)",
+            condition: false,
+            action: "check"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100, isActive: true },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n2", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n3", color: "#dc2626" }
+            ],
+            message: "Check fast != null and fast.next != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100, isActive: true },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n3", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n3", color: "#dc2626" }
+            ],
+            message: "Move slow = slow.next (1 step)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250, isActive: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n3", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n5", color: "#dc2626" }
+            ],
+            message: "Move fast = fast.next.next (2 steps)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250, isActive: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n3", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n5", color: "#dc2626" }
+            ],
+            message: "Check if slow == fast (false, continue)",
+            condition: false,
+            action: "check"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250, isActive: true }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n3", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n5", color: "#dc2626" }
+            ],
+            message: "Check fast != null and fast.next != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250, isActive: true },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n4", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n5", color: "#dc2626" }
+            ],
+            message: "Move slow = slow.next (1 step)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100, isActive: true },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n4", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n2", color: "#dc2626" }
+            ],
+            message: "Move fast = fast.next.next (2 steps, wraps around cycle)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100, isActive: true },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n4", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n2", color: "#dc2626" }
+            ],
+            message: "Check if slow == fast (false, continue)",
+            condition: false,
+            action: "check"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100, isActive: true },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n4", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n2", color: "#dc2626" }
+            ],
+            message: "Check fast != null and fast.next != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100, isActive: true },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n5", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n2", color: "#dc2626" }
+            ],
+            message: "Move slow = slow.next (1 step)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250, isActive: true },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n5", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n4", color: "#dc2626" }
+            ],
+            message: "Move fast = fast.next.next (2 steps)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100 },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250, isActive: true },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n5", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n4", color: "#dc2626" }
+            ],
+            message: "Check if slow == fast (false, continue)",
+            condition: false,
+            action: "check"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100, isActive: true },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n2", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n2", color: "#dc2626" }
+            ],
+            message: "Move pointers: slow to n2, fast to n2",
+            action: "traverse"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100, isActive: true },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n2", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n2", color: "#dc2626" }
+            ],
+            message: "Check if slow == fast (TRUE! Cycle detected)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 7,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 150, y: 100 },
+              { id: "n2", data: 2, next: "n3", x: 300, y: 100, isActive: true },
+              { id: "n3", data: 3, next: "n4", x: 450, y: 100 },
+              { id: "n4", data: 4, next: "n5", x: 450, y: 250 },
+              { id: "n5", data: 5, next: "n2", x: 300, y: 250 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n2", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n2", color: "#dc2626" }
+            ],
+            message: "Return true - Cycle found! Floyd's algorithm successfully detected the loop."
+          }
+        ]
       },
       {
         id: "advanced-4",
@@ -1497,7 +2941,191 @@ Each problem demonstrates important algorithmic patterns used in interviews.`
           ],
           activeLineIndex: 5,
           message: "When fast pointer reaches end, slow pointer is at the middle."
-        }
+        },executionSteps: [
+          {
+            lineIndex: 0,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n3", x: 200, y: 150 },
+              { id: "n3", data: 3, next: "n4", x: 300, y: 150 },
+              { id: "n4", data: 4, next: "n5", x: 400, y: 150 },
+              { id: "n5", data: 5, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" }
+            ],
+            message: "Finding middle element using two-pointer technique"
+          },
+          {
+            lineIndex: 1,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150, isActive: true },
+              { id: "n2", data: 2, next: "n3", x: 200, y: 150 },
+              { id: "n3", data: 3, next: "n4", x: 300, y: 150 },
+              { id: "n4", data: 4, next: "n5", x: 400, y: 150 },
+              { id: "n5", data: 5, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n1", color: "#16a34a" }
+            ],
+            message: "Initialize slow = head",
+            action: "assign"
+          },
+          {
+            lineIndex: 2,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150, isActive: true },
+              { id: "n2", data: 2, next: "n3", x: 200, y: 150 },
+              { id: "n3", data: 3, next: "n4", x: 300, y: 150 },
+              { id: "n4", data: 4, next: "n5", x: 400, y: 150 },
+              { id: "n5", data: 5, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n1", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n1", color: "#dc2626" }
+            ],
+            message: "Initialize fast = head",
+            action: "assign"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150, isActive: true },
+              { id: "n2", data: 2, next: "n3", x: 200, y: 150 },
+              { id: "n3", data: 3, next: "n4", x: 300, y: 150 },
+              { id: "n4", data: 4, next: "n5", x: 400, y: 150 },
+              { id: "n5", data: 5, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n1", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n1", color: "#dc2626" }
+            ],
+            message: "Check fast != null and fast.next != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n3", x: 200, y: 150, isActive: true },
+              { id: "n3", data: 3, next: "n4", x: 300, y: 150 },
+              { id: "n4", data: 4, next: "n5", x: 400, y: 150 },
+              { id: "n5", data: 5, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n2", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n1", color: "#dc2626" }
+            ],
+            message: "Move slow = slow.next (1 step)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n3", x: 200, y: 150 },
+              { id: "n3", data: 3, next: "n4", x: 300, y: 150, isActive: true },
+              { id: "n4", data: 4, next: "n5", x: 400, y: 150 },
+              { id: "n5", data: 5, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n2", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n3", color: "#dc2626" }
+            ],
+            message: "Move fast = fast.next.next (2 steps)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n3", x: 200, y: 150 },
+              { id: "n3", data: 3, next: "n4", x: 300, y: 150, isActive: true },
+              { id: "n4", data: 4, next: "n5", x: 400, y: 150 },
+              { id: "n5", data: 5, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n2", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n3", color: "#dc2626" }
+            ],
+            message: "Check fast != null and fast.next != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n3", x: 200, y: 150 },
+              { id: "n3", data: 3, next: "n4", x: 300, y: 150, isActive: true },
+              { id: "n4", data: 4, next: "n5", x: 400, y: 150 },
+              { id: "n5", data: 5, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n3", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n3", color: "#dc2626" }
+            ],
+            message: "Move slow = slow.next (1 step)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n3", x: 200, y: 150 },
+              { id: "n3", data: 3, next: "n4", x: 300, y: 150, isActive: true },
+              { id: "n4", data: 4, next: "n5", x: 400, y: 150 },
+              { id: "n5", data: 5, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n3", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n5", color: "#dc2626" }
+            ],
+            message: "Move fast = fast.next.next (2 steps)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n3", x: 200, y: 150 },
+              { id: "n3", data: 3, next: "n4", x: 300, y: 150, isActive: true },
+              { id: "n4", data: 4, next: "n5", x: 400, y: 150 },
+              { id: "n5", data: 5, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "head", label: "HEAD", targetNodeId: "n1", color: "#2563eb" },
+              { id: "slow", label: "SLOW", targetNodeId: "n3", color: "#16a34a" },
+              { id: "fast", label: "FAST", targetNodeId: "n5", color: "#dc2626" }
+            ],
+            message: "Check fast != null and fast.next != null (false, fast.next is null)",
+            condition: false,
+            action: "check"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "n1", data: 1, next: "n2", x: 100, y: 150 },
+              { id: "n2", data: 2, next: "n3", x: 200, y: 150 },
+              { id: "n3", data: 3, next: "n4", x: 300, y: 150, isActive: true },
+              { id: "n4", data: 4, next: "n5", x: 400, y: 150 },
+              { id: "n5", data: 5, next: null, x: 500, y: 150 }
+            ],
+            pointers: [
+              { id: "middle", label: "MIDDLE", targetNodeId: "n3", color: "#16a34a" }
+            ],
+            message: "Return slow (middle element found: node 3)"
+          }
+        ],
       },
       {
         id: "advanced-mcq-2",
@@ -1520,7 +3148,7 @@ Each problem demonstrates important algorithmic patterns used in interviews.`
         type: "visualization",
         title: "Problem 4: Merging Two Sorted Lists",
         code: [
-          "function merge(list1, list2):",
+          "function Merging(list1, list2):",
           "    dummy = new Node(0)",
           "    current = dummy",
           "    while list1 != null and list2 != null:",
@@ -1551,8 +3179,407 @@ Each problem demonstrates important algorithmic patterns used in interviews.`
             { id: "current", label: "CURR", targetNodeId: "m2", color: "#dc2626" }
           ],
           activeLineIndex: 8,
-          message: "Comparing 2 and 3. Since 2 ≤ 3, we add node 2 to the merged list."
-        }
+          message: "Comparing 2 and 3. Since 2 ≤ 3, we add node 2 to the Mergingd list."
+        },
+        executionSteps: [
+          {
+            lineIndex: 0,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l1n2", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80 },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n1", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n1", color: "#16a34a" }
+            ],
+            message: "Starting merge of two sorted lists: [1,3] and [2,4]"
+          },
+          {
+            lineIndex: 1,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l1n2", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80 },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: null, x: 350, y: 130, isTarget: true }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n1", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n1", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" }
+            ],
+            message: "Create dummy node to simplify merging logic",
+            action: "insert"
+          },
+          {
+            lineIndex: 2,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l1n2", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80 },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: null, x: 350, y: 130, isTarget: true }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n1", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n1", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "dummy", color: "#dc2626" }
+            ],
+            message: "Set current = dummy",
+            action: "assign"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l1n2", x: 100, y: 80, isActive: true },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80 },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180, isActive: true },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: null, x: 350, y: 130, isTarget: true }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n1", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n1", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "dummy", color: "#dc2626" }
+            ],
+            message: "Check while list1 != null and list2 != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l1n2", x: 100, y: 80, isActive: true },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80 },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180, isActive: true },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: null, x: 350, y: 130, isTarget: true }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n1", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n1", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "dummy", color: "#dc2626" }
+            ],
+            message: "Compare list1.data <= list2.data (1 <= 2? true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l1n2", x: 100, y: 80, isActive: true },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80 },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130, isTarget: true }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n1", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n1", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "dummy", color: "#dc2626" }
+            ],
+            message: "Set current.next = list1 (add node 1 to merged list)",
+            action: "assign"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l1n2", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80, isActive: true },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n2", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n1", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "dummy", color: "#dc2626" }
+            ],
+            message: "Move list1 = list1.next",
+            action: "traverse"
+          },
+          {
+            lineIndex: 9,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l1n2", x: 100, y: 80, isActive: true },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80 },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n2", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n1", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "l1n1", color: "#dc2626" }
+            ],
+            message: "Move current = current.next",
+            action: "traverse"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l1n2", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80, isActive: true },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180, isActive: true },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n2", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n1", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "l1n1", color: "#dc2626" }
+            ],
+            message: "Check while list1 != null and list2 != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l1n2", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80, isActive: true },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180, isActive: true },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n2", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n1", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "l1n1", color: "#dc2626" }
+            ],
+            message: "Compare list1.data <= list2.data (3 <= 2? false)",
+            condition: false,
+            action: "check"
+          },
+          {
+            lineIndex: 7,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l2n1", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80 },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180, isActive: true },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n2", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n1", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "l1n1", color: "#dc2626" }
+            ],
+            message: "Set current.next = list2 (add node 2 to merged list)",
+            action: "assign"
+          },
+          {
+            lineIndex: 8,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l2n1", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80 },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180, isActive: true },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n2", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n2", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "l1n1", color: "#dc2626" }
+            ],
+            message: "Move list2 = list2.next",
+            action: "traverse"
+          },
+          {
+            lineIndex: 9,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l2n1", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80 },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180, isActive: true },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n2", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n2", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "l2n1", color: "#dc2626" }
+            ],
+            message: "Move current = current.next",
+            action: "traverse"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l2n1", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80, isActive: true },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180, isActive: true },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n2", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n2", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "l2n1", color: "#dc2626" }
+            ],
+            message: "Check while list1 != null and list2 != null (true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 4,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l2n1", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80, isActive: true },
+              
+              { id: "l2n1", data: 2, next: "l2n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180, isActive: true },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n2", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n2", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "l2n1", color: "#dc2626" }
+            ],
+            message: "Compare list1.data <= list2.data (3 <= 4? true)",
+            condition: true,
+            action: "check"
+          },
+          {
+            lineIndex: 5,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l2n1", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80, isActive: true },
+              
+              { id: "l2n1", data: 2, next: "l1n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: "l1n2", color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n2", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "l2n1", color: "#dc2626" }
+            ],
+            message: "Set current.next = list1 (add node 3 to merged list)",
+            action: "assign"
+          },
+          {
+            lineIndex: 6,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l2n1", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80 },
+              
+              { id: "l2n1", data: 2, next: "l1n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180, isActive: true },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: null, color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n2", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "l2n1", color: "#dc2626" }
+            ],
+            message: "Move list1 = list1.next (null)",
+            action: "traverse"
+          },
+          {
+            lineIndex: 9,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l2n1", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80, isActive: true },
+              
+              { id: "l2n1", data: 2, next: "l1n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: null, color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n2", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "l1n2", color: "#dc2626" }
+            ],
+            message: "Move current = current.next",
+            action: "traverse"
+          },
+          {
+            lineIndex: 3,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l2n1", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: null, x: 200, y: 80 },
+              
+              { id: "l2n1", data: 2, next: "l1n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180, isActive: true },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "list1", label: "L1", targetNodeId: null, color: "#2563eb" },
+              { id: "list2", label: "L2", targetNodeId: "l2n2", color: "#16a34a" },
+              { id: "dummy", label: "DUMMY", targetNodeId: "dummy", color: "#d97706" },
+              { id: "current", label: "CURR", targetNodeId: "l1n2", color: "#dc2626" }
+            ],
+            message: "Check while list1 != null and list2 != null (false, list1 is null)",
+            condition: false,
+            action: "check"
+          },
+          {
+            lineIndex: 10,
+            nodes: [
+              { id: "l1n1", data: 1, next: "l2n1", x: 100, y: 80 },
+              { id: "l1n2", data: 3, next: "l2n2", x: 200, y: 80 },
+              
+              { id: "l2n1", data: 2, next: "l1n2", x: 100, y: 180 },
+              { id: "l2n2", data: 4, next: null, x: 200, y: 180 },
+              
+              { id: "dummy", data: 0, next: "l1n1", x: 350, y: 130 }
+            ],
+            pointers: [
+              { id: "merged", label: "MERGED", targetNodeId: "l1n1", color: "#16a34a" }
+            ],
+            message: "Append remaining nodes and return dummy.next. Merged list: 1->2->3->4"
+          }
+        ]
       },
       {
         id: "advanced-6",
@@ -1786,4 +3813,5 @@ Always discuss tradeoffs! Mention cache performance, memory overhead, and specif
       }
     ]
   }
+
 ];
