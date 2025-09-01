@@ -2,6 +2,7 @@
 
 import { Node, Pointer } from '@/lib/lessons-data';
 import { motion, AnimatePresence } from 'framer-motion';
+import * as React from 'react';
 
 interface LinkedListVisualizationProps {
   nodes: Node[];
@@ -13,7 +14,6 @@ export default function LinkedListVisualization({ nodes, pointers }: LinkedListV
   const svgHeight = 500;
   const nodeRadius = 30;
 
-  // Animation variants
   const nodeVariants = {
     initial: { scale: 0, opacity: 0 },
     animate: { scale: 1, opacity: 1 },
@@ -25,106 +25,97 @@ export default function LinkedListVisualization({ nodes, pointers }: LinkedListV
     animate: { opacity: 1, y: 0 },
   };
 
+  // Find the head node id from pointers (label "HEAD"), fallback to first node
+  const headId = React.useMemo(
+    () =>
+      pointers.find(p => (p.label || '').toUpperCase() === 'HEAD')?.targetNodeId
+      ?? nodes[0]?.id
+      ?? null,
+    [pointers, nodes]
+  );
+
+  // Helper to build a nice upward arc between two points
+  const buildQuadraticArc = (sx: number, sy: number, ex: number, ey: number, lift = 80) => {
+    const mx = (sx + ex) / 2;
+    const my = Math.min(sy, ey) - lift; // arc above the nodes
+    return `M ${sx} ${sy} Q ${mx} ${my} ${ex} ${ey}`;
+  };
+
   return (
     <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 overflow-hidden">
-      <svg 
-        width={svgWidth} 
-        height={svgHeight} 
+      <svg
+        width={svgWidth}
+        height={svgHeight}
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
         className="w-full h-auto max-w-full"
         preserveAspectRatio="xMidYMid meet"
       >
         <defs>
-          <marker
-            id="arrowhead"
-            markerWidth="10"
-            markerHeight="7"
-            refX="9"
-            refY="3.5"
-            orient="auto"
-          >
-            <polygon
-              points="0 0, 10 3.5, 0 7"
-              fill="#374151"
-            />
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#374151" />
           </marker>
-          <marker
-            id="arrowhead-active"
-            markerWidth="10"
-            markerHeight="7"
-            refX="9"
-            refY="3.5"
-            orient="auto"
-          >
-            <polygon
-              points="0 0, 10 3.5, 0 7"
-              fill="#dc2626"
-            />
+          <marker id="arrowhead-active" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626" />
           </marker>
         </defs>
 
         {/* Node connections (arrows) */}
         <AnimatePresence>
           {nodes.map((node) => {
-            const targetNode = node.next ? nodes.find(n => n.id === node.next) : null;
-            if (!targetNode && node.next !== null) return null;
+            const nextId = node.next ?? null; // treat undefined as null
+            const targetNode = nextId ? nodes.find(n => n.id === nextId) : null;
 
-            // Handle circular references
-            const isCircular = node.next === nodes[0]?.id && nodes.length > 1;
-            
-            if (targetNode || isCircular) {
+            // 1) Circular tail -> head (curved with arrowhead)
+            const isTailToHead = !!headId && nextId === headId;
+            if (isTailToHead) {
               const startX = node.x + nodeRadius;
               const startY = node.y;
-              
-              let endX, endY;
-              if (isCircular) {
-                // Circular arrow back to first node
-                endX = nodes[0].x - nodeRadius;
-                endY = nodes[0].y;
-                
-                // Create a curved path for circular reference
-                const midX = (startX + endX) / 2;
-                const midY = Math.min(startY, endY) - 80;
-                
-                return (
-                  <motion.path
-                    key={`${node.id}-circular`}
-                    d={`M ${startX} ${startY} Q ${midX} ${midY} ${endX} ${endY}`}
-                    stroke="#374151"
-                    strokeWidth="2"
-                    fill="none"
-                    markerEnd="url(#arrowhead)"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    exit={{ pathLength: 0 }}
-                    transition={{ duration: 0.5 }}
-                  />
-                );
-              } else if (targetNode) {
-                endX = targetNode.x - nodeRadius;
-                endY = targetNode.y;
+              const endX = (nodes.find(n => n.id === headId)?.x ?? node.x) - nodeRadius;
+              const endY = (nodes.find(n => n.id === headId)?.y ?? node.y);
 
-                return (
-                  <motion.line
-                    key={`${node.id}-${targetNode.id}`}
-                    x1={startX}
-                    y1={startY}
-                    x2={endX}
-                    y2={endY}
-                    stroke="#374151"
-                    strokeWidth="2"
-                    markerEnd="url(#arrowhead)"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    exit={{ pathLength: 0 }}
-                    transition={{ duration: 0.5 }}
-                  />
-                );
-              }
+              return (
+                <motion.path
+                  key={`${node.id}-circular`}
+                  d={buildQuadraticArc(startX, startY, endX, endY)}
+                  stroke="#374151"
+                  strokeWidth="2"
+                  fill="none"
+                  markerEnd="url(#arrowhead)"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  exit={{ pathLength: 0 }}
+                  transition={{ duration: 0.5 }}
+                />
+              );
             }
 
-            // NULL pointer
-            if (node.next === null) {
+            // 2) Normal next link
+            if (targetNode) {
+              const startX = node.x + nodeRadius;
+              const startY = node.y;
+              const endX = targetNode.x - nodeRadius;
+              const endY = targetNode.y;
+
+              return (
+                <motion.line
+                  key={`${node.id}-${targetNode.id}`}
+                  x1={startX}
+                  y1={startY}
+                  x2={endX}
+                  y2={endY}
+                  stroke="#374151"
+                  strokeWidth="2"
+                  markerEnd="url(#arrowhead)"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  exit={{ pathLength: 0 }}
+                  transition={{ duration: 0.5 }}
+                />
+              );
+            }
+
+            // 3) NULL pointer for standard singly list
+            if (nextId === null) {
               const startX = node.x + nodeRadius;
               const startY = node.y;
               const endX = startX + 40;
@@ -157,12 +148,13 @@ export default function LinkedListVisualization({ nodes, pointers }: LinkedListV
               );
             }
 
+            // If nextId is set but doesn't resolve to a node, don't draw anything.
             return null;
           })}
 
           {/* Doubly linked list backward arrows */}
           {nodes.map((node) => {
-            if (!node.prev) return null;
+            if (!('prev' in node) || !node.prev) return null;
             const prevNode = nodes.find(n => n.id === node.prev);
             if (!prevNode) return null;
 
@@ -201,17 +193,14 @@ export default function LinkedListVisualization({ nodes, pointers }: LinkedListV
               exit="exit"
               transition={{ duration: 0.3 }}
             >
-              {/* Node background circle */}
               <circle
                 cx={node.x}
                 cy={node.y}
                 r={nodeRadius}
-                fill={node.isActive ? "#dbeafe" : node.isTarget ? "#dcfce7" : "white"}
-                stroke={node.isActive ? "#3b82f6" : node.isTarget ? "#16a34a" : "#374151"}
-                strokeWidth={node.isActive || node.isTarget ? "3" : "2"}
+                fill={node.isActive ? "#dbeafe" : (node as any).isTarget ? "#dcfce7" : "white"}
+                stroke={node.isActive ? "#3b82f6" : (node as any).isTarget ? "#16a34a" : "#374151"}
+                strokeWidth={node.isActive || (node as any).isTarget ? "3" : "2"}
               />
-
-              {/* Data compartment */}
               <text
                 x={node.x}
                 y={node.y + 5}
@@ -224,8 +213,8 @@ export default function LinkedListVisualization({ nodes, pointers }: LinkedListV
                 {node.data}
               </text>
 
-              {/* Next pointer compartment separator for singly linked lists */}
-              {!node.prev && (
+              {/* Simple compartment hint for singly nodes (no prev) */}
+              {!( 'prev' in node ) && (
                 <line
                   x1={node.x + 15}
                   y1={node.y - nodeRadius + 5}
@@ -236,8 +225,8 @@ export default function LinkedListVisualization({ nodes, pointers }: LinkedListV
                 />
               )}
 
-              {/* Doubly linked list compartments */}
-              {node.prev !== undefined && (
+              {/* Doubly compartments */}
+              {('prev' in node) && (
                 <>
                   <line
                     x1={node.x - 10}
@@ -261,14 +250,15 @@ export default function LinkedListVisualization({ nodes, pointers }: LinkedListV
           ))}
         </AnimatePresence>
 
-        {/* Pointers */}
+        {/* External pointers (HEAD/CURRENT/etc.) */}
         <AnimatePresence>
           {pointers.map((pointer) => {
-            const targetNode = nodes.find(n => n.id === pointer.targetNodeId);
-            if (!targetNode && pointer.targetNodeId !== null) return null;
+            const targetNode = pointer.targetNodeId != null
+              ? nodes.find(n => n.id === pointer.targetNodeId)
+              : null;
 
-            // Handle null pointers
-            if (pointer.targetNodeId === null) {
+            // Null pointer card
+            if (pointer.targetNodeId == null) {
               return (
                 <motion.g
                   key={pointer.id}
@@ -278,17 +268,9 @@ export default function LinkedListVisualization({ nodes, pointers }: LinkedListV
                   exit="exit"
                   transition={{ duration: 0.3 }}
                 >
-                  {/* Pointer label for null */}
-                  <rect
-                    x={50}
-                    y={50}
-                    width="60"
-                    height="20"
-                    fill={pointer.color}
-                    rx="4"
-                  />
+                  <rect x={50} y={50} width="80" height="20" fill={pointer.color} rx="4" />
                   <text
-                    x={80}
+                    x={90}
                     y={64}
                     textAnchor="middle"
                     fill="white"
@@ -302,6 +284,8 @@ export default function LinkedListVisualization({ nodes, pointers }: LinkedListV
               );
             }
 
+            if (!targetNode) return null;
+
             const x = targetNode.x;
             const y = targetNode.y - 60;
 
@@ -314,7 +298,6 @@ export default function LinkedListVisualization({ nodes, pointers }: LinkedListV
                 exit="exit"
                 transition={{ duration: 0.3 }}
               >
-                {/* Pointer arrow */}
                 <motion.line
                   x1={x}
                   y1={y + 20}
@@ -327,16 +310,7 @@ export default function LinkedListVisualization({ nodes, pointers }: LinkedListV
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                 />
-
-                {/* Pointer label */}
-                <rect
-                  x={x - 25}
-                  y={y - 10}
-                  width="50"
-                  height="20"
-                  fill={pointer.color}
-                  rx="4"
-                />
+                <rect x={x - 25} y={y - 10} width="50" height="20" fill={pointer.color} rx="4" />
                 <text
                   x={x}
                   y={y + 4}
