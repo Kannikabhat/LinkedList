@@ -1,27 +1,27 @@
 "use client";
 
 import { useState } from 'react';
-import { Lesson, LessonStep } from '@/lib/lessons-data';
+import { HashingLesson, LessonStep } from '@/lib/hashing-data';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, ChevronLeft, ChevronRight, Home } from 'lucide-react';
 import ContentStep from '@/components/steps/ContentStep';
-import VisualizationStep from '@/components/steps/VisualizationStep';
 import MCQStep from '@/components/steps/MCQStep';
+import HashVisualization from '@/components/HashVisualization';
 
-interface LessonViewerProps {
-  lesson: Lesson;
+interface HashLessonViewerProps {
+  lesson: HashingLesson;
   currentStep: number;
   onStepChange: (step: number) => void;
   onBackToMenu: () => void;
 }
 
-export default function LessonViewer({ 
+export default function HashLessonViewer({ 
   lesson, 
   currentStep, 
   onStepChange, 
   onBackToMenu 
-}: LessonViewerProps) {
+}: HashLessonViewerProps) {
   const [mcqAnswered, setMcqAnswered] = useState(false);
   const currentStepData = lesson.steps[currentStep];
   const totalSteps = lesson.steps.length;
@@ -47,72 +47,72 @@ export default function LessonViewer({
 
   const canProceed = currentStepData.type !== 'mcq' || mcqAnswered;
 
-  // Special styling for Doubly Linked List lesson (lesson id: 3)
-  const isDoublyLinkedListLesson = lesson.id === 3;
-  
   return (
-    <div className={`min-h-screen ${isDoublyLinkedListLesson ? 'bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50' : 'bg-gray-50'}`}>
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className={`${isDoublyLinkedListLesson ? 'bg-gradient-to-r from-purple-100 to-pink-100 border-purple-200' : 'bg-white border-gray-200'} border-b px-6 py-4`}>
+      <div className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button 
               variant="ghost" 
               onClick={onBackToMenu}
-              className={`flex items-center gap-2 ${isDoublyLinkedListLesson ? 'text-purple-700 hover:text-purple-900' : 'text-gray-600 hover:text-gray-900'}`}
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
             >
               <Home className="w-4 h-4" />
               Back to Menu
             </Button>
-            <div className={`h-6 w-px ${isDoublyLinkedListLesson ? 'bg-purple-300' : 'bg-gray-300'}`} />
+            <div className="h-6 w-px bg-gray-300" />
             <div>
-              <h1 className={`text-xl font-semibold ${isDoublyLinkedListLesson ? 'text-purple-800' : 'text-gray-900'}`}>
+              <h1 className="text-xl font-semibold text-gray-900">
                 Lesson {lesson.id}: {lesson.title}
               </h1>
-              <p className={`text-sm ${isDoublyLinkedListLesson ? 'text-purple-600' : 'text-gray-500'}`}>
+              <p className="text-sm text-gray-500">
                 Step {currentStep + 1} of {totalSteps}: {currentStepData.title}
               </p>
             </div>
           </div>
           
           <div className="flex items-center gap-4">
-            <div className={`text-sm min-w-[100px] text-right ${isDoublyLinkedListLesson ? 'text-purple-600' : 'text-gray-500'}`}>
+            <div className="text-sm min-w-[100px] text-right text-gray-500">
               {Math.round(progress)}% Complete
             </div>
-            <Progress value={progress} className={`w-32 ${isDoublyLinkedListLesson ? '[&>div]:bg-gradient-to-r [&>div]:from-purple-400 [&>div]:to-pink-400' : ''}`} />
+            <Progress value={progress} className="w-32" />
           </div>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto p-6">
-        <div className={`${isDoublyLinkedListLesson ? 'bg-white bg-opacity-90 backdrop-blur-sm border-purple-200 shadow-lg' : 'bg-white border-gray-200 shadow-sm'} rounded-xl border min-h-[600px]`}>
+        <div className="bg-white border-gray-200 shadow-sm rounded-xl border min-h-[600px]">
           {/* Step Content */}
           <div className="p-8">
             {currentStepData.type === 'content' && (
               <ContentStep step={currentStepData} />
             )}
-            {currentStepData.type === 'visualization' && (
-              <VisualizationStep
-             step={{
-    ...currentStepData,
-    code: currentStepData.code?.map((line) => ({ line })) // wrap each string in an object
-  }}
-/>
+           {currentStepData.type === 'visualization' && currentStepData.visualization?.slots && (
+  <HashVisualization
+    visualization={{
+      slots: currentStepData.visualization.slots,
+      activeSlotIndex: currentStepData.visualization.activeSlotIndex,
+      message: currentStepData.visualization.message,
+      outputText: currentStepData.visualization?.outputText,
+      hashValue: currentStepData.visualization.hashValue,
+    }}
+  />
+)}
 
-            )}
             {currentStepData.type === 'mcq' && (
               <MCQStep step={currentStepData} onAnswer={handleMCQAnswer} />
             )}
           </div>
 
           {/* Navigation */}
-          <div className={`border-t ${isDoublyLinkedListLesson ? 'border-purple-200' : 'border-gray-200'} px-8 py-6 flex items-center justify-between`}>
+          <div className="border-t border-gray-200 px-8 py-6 flex items-center justify-between">
             <Button
               variant="outline"
               onClick={handlePrevious}
               disabled={currentStep === 0}
-              className={`flex items-center gap-2 ${isDoublyLinkedListLesson ? 'border-purple-300 text-purple-700 hover:bg-purple-50' : ''}`}
+              className="flex items-center gap-2"
             >
               <ChevronLeft className="w-4 h-4" />
               Previous
@@ -124,10 +124,10 @@ export default function LessonViewer({
                   key={index}
                   className={`w-2 h-2 rounded-full transition-colors ${
                     index === currentStep
-                      ? isDoublyLinkedListLesson ? 'bg-purple-500' : 'bg-blue-500'
+                      ? 'bg-blue-500'
                       : index < currentStep
-                      ? isDoublyLinkedListLesson ? 'bg-pink-400' : 'bg-green-500'
-                      : isDoublyLinkedListLesson ? 'bg-purple-200' : 'bg-gray-300'
+                      ? 'bg-green-500'
+                      : 'bg-gray-300'
                   }`}
                 />
               ))}
@@ -137,7 +137,7 @@ export default function LessonViewer({
               <Button
                 onClick={handleNext}
                 disabled={!canProceed}
-                className={`flex items-center gap-2 ${isDoublyLinkedListLesson ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600' : 'bg-blue-500 hover:bg-blue-600'}`}
+                className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white"
               >
                 Next
                 <ChevronRight className="w-4 h-4" />
@@ -145,7 +145,7 @@ export default function LessonViewer({
             ) : (
               <Button
                 onClick={onBackToMenu}
-                className={`flex items-center gap-2 ${isDoublyLinkedListLesson ? 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600' : 'bg-green-500 hover:bg-green-600'}`}
+                className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white"
               >
                 Complete Lesson
                 <Home className="w-4 h-4" />
