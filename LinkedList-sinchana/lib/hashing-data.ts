@@ -23,6 +23,7 @@ export interface HashVisualizationStep {
   message?: string;
   outputText?: string;
   hashValue?: number;
+  code?: string[];
 }
 
 export interface HashSlot {
@@ -42,6 +43,7 @@ export interface HashExecutionStep {
   hashValue?: number;
   key?: string;
   action?: 'hash' | 'insert' | 'search' | 'delete' | 'collision' | 'probe';
+  code?: string[];
 }
 
 export interface MCQOption {

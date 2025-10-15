@@ -1,10 +1,12 @@
+
+
 "use client";
 
 import { useState } from 'react';
-import { Lesson, LessonStep } from '@/lib/lessons-data';
+import { Lesson } from '@/lib/lessons-data';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, ChevronLeft, ChevronRight, Home } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Home } from 'lucide-react';
 import ContentStep from '@/components/steps/ContentStep';
 import VisualizationStep from '@/components/steps/VisualizationStep';
 import MCQStep from '@/components/steps/MCQStep';
@@ -26,6 +28,9 @@ export default function LessonViewer({
   const currentStepData = lesson.steps[currentStep];
   const totalSteps = lesson.steps.length;
   const progress = ((currentStep + 1) / totalSteps) * 100;
+   console.log("Rendering step:", currentStep, currentStepData.type, currentStepData.title);
+  console.log("LessonViewer sending step to VisualizationStep:", currentStepData);
+
 
   const handleNext = () => {
     if (currentStep < totalSteps - 1) {
@@ -47,9 +52,8 @@ export default function LessonViewer({
 
   const canProceed = currentStepData.type !== 'mcq' || mcqAnswered;
 
-  // Special styling for Doubly Linked List lesson (lesson id: 3)
   const isDoublyLinkedListLesson = lesson.id === 3;
-  
+
   return (
     <div className={`min-h-screen ${isDoublyLinkedListLesson ? 'bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50' : 'bg-gray-50'}`}>
       {/* Header */}
@@ -89,18 +93,25 @@ export default function LessonViewer({
         <div className={`${isDoublyLinkedListLesson ? 'bg-white bg-opacity-90 backdrop-blur-sm border-purple-200 shadow-lg' : 'bg-white border-gray-200 shadow-sm'} rounded-xl border min-h-[600px]`}>
           {/* Step Content */}
           <div className="p-8">
+            
+
             {currentStepData.type === 'content' && (
               <ContentStep step={currentStepData} />
             )}
-            {currentStepData.type === 'visualization' && (
-              <VisualizationStep
-             step={{
-    ...currentStepData,
-    code: currentStepData.code?.map((line) => ({ line })) // wrap each string in an object
-  }}
-/>
+             
+        {currentStepData.type === 'visualization' && (
+  <VisualizationStep
+    step={{
+      ...currentStepData,
+      code: currentStepData.code?.map((line) =>
+        typeof line === 'string' ? { line } : line
+      ),
+      executionSteps: currentStepData.executionSteps, // <-- add this
+    }}
+  />
+)}
 
-            )}
+
             {currentStepData.type === 'mcq' && (
               <MCQStep step={currentStepData} onAnswer={handleMCQAnswer} />
             )}
