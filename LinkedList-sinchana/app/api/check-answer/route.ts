@@ -247,12 +247,7 @@ Question: ${question}
 Student Answer: ${answer ?? ""}
 Attempt Number: ${attempt ?? 1}
 
-Evaluate the student's answer and provide progressive guidance:
-
-${ruleSet}
-
-If relevant, use these visualization hints:
-${hints}
+Evaluate the student's answer based on the question and context, and provide progressive guidance.
 
 Return ONLY this JSON:
 {
@@ -304,7 +299,8 @@ export async function POST(req: Request) {
     }
 
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${apiKey}
+`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
