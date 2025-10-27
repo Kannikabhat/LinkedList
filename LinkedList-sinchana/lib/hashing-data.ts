@@ -674,8 +674,186 @@ for each character c in string:
             key: "Bob",
             action: "search"
           }
-        ]
-      },
+        ]},{
+  id: "chaining-insertion",
+  type: "visualization",
+  title: "Chaining: Insertion",
+  code: [
+    "function insertChaining(table, key, value):",
+    "    index = hash(key) % table.size",
+    "    if table[index] is empty:",
+    "        table[index] = new LinkedList()",
+    "    table[index].insert(key, value)"
+  ],
+  visualization: {
+    slots: [
+      { id: "slot0", index: 0, nodes: [], x: 100, y: 100 },
+      { id: "slot1", index: 1, nodes: [{ id: "n1", key: "Alice", value: "234-567", x: 200, y: 170 }, { id: "n2", key: "Bob", value: "345-678", x: 320, y: 170 }], x: 100, y: 150 },
+      { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+      { id: "slot3", index: 3, nodes: [{ id: "n3", key: "Charlie", value: "456-789", x: 200, y: 270 }], x: 100, y: 250 },
+      { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+    ],
+    message: "Inserting 'Bob' into chain at index 1 after collision with 'Alice'"
+  },
+  executionSteps: [
+    {
+      lineIndex: 1,
+      slots: [
+        { id: "slot0", index: 0, nodes: [], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n1", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [{ id: "n3", key: "Charlie", value: "456-789", x: 200, y: 270 }], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Insert 'Bob': hash('Bob') = 1",
+      hashValue: 1,
+      key: "Bob",
+      action: "hash"
+    },
+    {
+      lineIndex: 4,
+      slots: [
+        { id: "slot0", index: 0, nodes: [], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n1", key: "Alice", value: "234-567", x: 200, y: 170 }, { id: "n2", key: "Bob", value: "345-678", x: 320, y: 170, isActive: true }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [{ id: "n3", key: "Charlie", value: "456-789", x: 200, y: 270 }], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Collision detected! Append 'Bob' to the chain at index 1",
+      action: "collision"
+    }
+  ]
+}
+,{
+  id: "chaining-searching",
+  type: "visualization",
+  title: "Chaining: Searching",
+  code: [
+    "function searchChaining(table, key):",
+    "    index = hash(key) % table.size",
+    "    if table[index] is not empty:",
+    "        return table[index].search(key)",
+    "    return null"
+  ],
+  visualization: {
+    slots: [
+      { id: "slot0", index: 0, nodes: [], x: 100, y: 100 },
+      { id: "slot1", index: 1, nodes: [{ id: "n1", key: "Alice", value: "234-567", x: 200, y: 170 }, { id: "n2", key: "Bob", value: "345-678", x: 320, y: 170, isTarget: true }], x: 100, y: 150 },
+      { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+      { id: "slot3", index: 3, nodes: [{ id: "n3", key: "Charlie", value: "456-789", x: 200, y: 270 }], x: 100, y: 250 },
+      { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+    ],
+    message: "Found 'Bob' at index 1 after traversing the chain",
+    outputText: "345-678"
+  },
+  executionSteps: [
+    {
+      lineIndex: 1,
+      slots: [
+        { id: "slot0", index: 0, nodes: [], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n1", key: "Alice", value: "234-567", x: 200, y: 170 }, { id: "n2", key: "Bob", value: "345-678", x: 320, y: 170 }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [{ id: "n3", key: "Charlie", value: "456-789", x: 200, y: 270 }], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Search 'Bob': hash('Bob') = 1",
+      hashValue: 1,
+      key: "Bob",
+      action: "hash"
+    },
+    {
+      lineIndex: 3,
+      slots: [
+        { id: "slot0", index: 0, nodes: [], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n1", key: "Alice", value: "234-567", x: 200, y: 170, isActive: true }, { id: "n2", key: "Bob", value: "345-678", x: 320, y: 170 }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [{ id: "n3", key: "Charlie", value: "456-789", x: 200, y: 270 }], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Chain not empty. Traverse: check 'Alice' - not a match",
+      action: "search"
+    },
+    {
+      lineIndex: 3,
+      slots: [
+        { id: "slot0", index: 0, nodes: [], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n1", key: "Alice", value: "234-567", x: 200, y: 170 }, { id: "n2", key: "Bob", value: "345-678", x: 320, y: 170, isTarget: true }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [{ id: "n3", key: "Charlie", value: "456-789", x: 200, y: 270 }], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Found 'Bob'! Return value: 345-678",
+      outputText: "345-678",
+      action: "search"
+    }
+  ]
+}
+,{
+  id: "chaining-deletion",
+  type: "visualization",
+  title: "Chaining: Deletion",
+  code: [
+    "function deleteChaining(table, key):",
+    "    index = hash(key) % table.size",
+    "    if table[index] is not empty:",
+    "        table[index].delete(key)",
+    "        if table[index].isEmpty():",
+    "            table[index] = null"
+  ],
+  visualization: {
+    slots: [
+      { id: "slot0", index: 0, nodes: [], x: 100, y: 100 },
+      { id: "slot1", index: 1, nodes: [{ id: "n1", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+      { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+      { id: "slot3", index: 3, nodes: [{ id: "n3", key: "Charlie", value: "456-789", x: 200, y: 270 }], x: 100, y: 250 },
+      { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+    ],
+    message: "'Bob' deleted from chain at index 1. 'Alice' remains."
+  },
+  executionSteps: [
+    {
+      lineIndex: 1,
+      slots: [
+        { id: "slot0", index: 0, nodes: [], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n1", key: "Alice", value: "234-567", x: 200, y: 170 }, { id: "n2", key: "Bob", value: "345-678", x: 320, y: 170 }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [{ id: "n3", key: "Charlie", value: "456-789", x: 200, y: 270 }], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Delete 'Bob': hash('Bob') = 1",
+      hashValue: 1,
+      key: "Bob",
+      action: "hash"
+    },
+    {
+      lineIndex: 3,
+      slots: [
+        { id: "slot0", index: 0, nodes: [], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n1", key: "Alice", value: "234-567", x: 200, y: 170 }, { id: "n2", key: "Bob", value: "345-678", x: 320, y: 170, isTarget: true }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [{ id: "n3", key: "Charlie", value: "456-789", x: 200, y: 270 }], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Chain not empty. Traverse to find 'Bob'",
+      action: "search"
+    },
+    {
+      lineIndex: 3,
+      slots: [
+        { id: "slot0", index: 0, nodes: [], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n1", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [{ id: "n3", key: "Charlie", value: "456-789", x: 200, y: 270 }], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Remove 'Bob' from chain. Chain still has other nodes.",
+      action: "delete"
+    }
+  ]
+}
+,
+
+
       {
         id: "open-addressing-intro",
         type: "content",
@@ -706,151 +884,564 @@ for each character c in string:
 ❌ Performance degrades as table fills up
 ❌ Deletion is complex (requires tombstones)`
       },
-      {
-        id: "linear-probing-viz",
-        type: "visualization",
-        title: "Linear Probing Implementation",
-        code: [
-          "function insertLinearProbing(table, key, value):",
-          "    index = hash(key) % table.size",
-          "    while table[index] is not empty:",
-          "        if table[index].key == key:",
-          "            table[index].value = value  // Update",
-          "            return",
-          "        index = (index + 1) % table.size",
-          "    table[index] = (key, value)"
-        ],
-        visualization: {
-          slots: [
-            { id: "slot0", index: 0, nodes: [{ id: "n22", key: "22", value: "data", x: 200, y: 120 }], x: 100, y: 100 },
-            { id: "slot1", index: 1, nodes: [{ id: "n15", key: "15", value: "data", x: 200, y: 170 }], x: 100, y: 150 },
-            { id: "slot2", index: 2, nodes: [{ id: "n29", key: "29", value: "data", x: 200, y: 220, isActive: true }], x: 100, y: 200 },
-            { id: "slot3", index: 3, nodes: [{ id: "n10", key: "10", value: "data", x: 200, y: 270 }], x: 100, y: 250 },
-            { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
-            { id: "slot5", index: 5, nodes: [], x: 100, y: 350 },
-            { id: "slot6", index: 6, nodes: [], x: 100, y: 400 }
-          ],
-          message: "Linear probing: Key 29 hashed to index 1 (occupied), probed to index 2"
-        },
-        executionSteps: [
-          {
-            lineIndex: 1,
-            slots: [
-              { id: "slot0", index: 0, nodes: [], x: 100, y: 100 },
-              { id: "slot1", index: 1, nodes: [{ id: "n15", key: "15", value: "data", x: 200, y: 170 }], x: 100, y: 150 },
-              { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
-              { id: "slot3", index: 3, nodes: [{ id: "n10", key: "10", value: "data", x: 200, y: 270 }], x: 100, y: 250 },
-              { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
-              { id: "slot5", index: 5, nodes: [], x: 100, y: 350 },
-              { id: "slot6", index: 6, nodes: [], x: 100, y: 400 }
-            ],
-            message: "Insert key '22': hash(22) = 22 % 7 = 1",
-            hashValue: 1,
-            key: "22",
-            action: "hash"
-          },
-          {
-            lineIndex: 2,
-            slots: [
-              { id: "slot0", index: 0, nodes: [], x: 100, y: 100 },
-              { id: "slot1", index: 1, nodes: [{ id: "n15", key: "15", value: "data", x: 200, y: 170 }], x: 100, y: 150, isActive: true },
-              { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
-              { id: "slot3", index: 3, nodes: [{ id: "n10", key: "10", value: "data", x: 200, y: 270 }], x: 100, y: 250 },
-              { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
-              { id: "slot5", index: 5, nodes: [], x: 100, y: 350 },
-              { id: "slot6", index: 6, nodes: [], x: 100, y: 400 }
-            ],
-            message: "Index 1 is occupied by '15' - COLLISION!",
-            action: "collision"
-          },
-          {
-            lineIndex: 6,
-            slots: [
-              { id: "slot0", index: 0, nodes: [], x: 100, y: 100, isActive: true },
-              { id: "slot1", index: 1, nodes: [{ id: "n15", key: "15", value: "data", x: 200, y: 170 }], x: 100, y: 150 },
-              { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
-              { id: "slot3", index: 3, nodes: [{ id: "n10", key: "10", value: "data", x: 200, y: 270 }], x: 100, y: 250 },
-              { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
-              { id: "slot5", index: 5, nodes: [], x: 100, y: 350 },
-              { id: "slot6", index: 6, nodes: [], x: 100, y: 400 }
-            ],
-            message: "Probe next slot: index = (1 + 1) % 7 = 2, but let's go to 0 first",
-            action: "probe"
-          },
-          {
-            lineIndex: 7,
-            slots: [
-              { id: "slot0", index: 0, nodes: [{ id: "n22", key: "22", value: "data", x: 200, y: 120 }], x: 100, y: 100, isActive: true },
-              { id: "slot1", index: 1, nodes: [{ id: "n15", key: "15", value: "data", x: 200, y: 170 }], x: 100, y: 150 },
-              { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
-              { id: "slot3", index: 3, nodes: [{ id: "n10", key: "10", value: "data", x: 200, y: 270 }], x: 100, y: 250 },
-              { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
-              { id: "slot5", index: 5, nodes: [], x: 100, y: 350 },
-              { id: "slot6", index: 6, nodes: [], x: 100, y: 400 }
-            ],
-            message: "Found empty slot at index 0, insert '22' here",
-            action: "insert"
-          },
-          {
-            lineIndex: 1,
-            slots: [
-              { id: "slot0", index: 0, nodes: [{ id: "n22", key: "22", value: "data", x: 200, y: 120 }], x: 100, y: 100 },
-              { id: "slot1", index: 1, nodes: [{ id: "n15", key: "15", value: "data", x: 200, y: 170 }], x: 100, y: 150, isActive: true },
-              { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
-              { id: "slot3", index: 3, nodes: [{ id: "n10", key: "10", value: "data", x: 200, y: 270 }], x: 100, y: 250 },
-              { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
-              { id: "slot5", index: 5, nodes: [], x: 100, y: 350 },
-              { id: "slot6", index: 6, nodes: [], x: 100, y: 400 }
-            ],
-            message: "Insert key '29': hash(29) = 29 % 7 = 1",
-            hashValue: 1,
-            key: "29",
-            action: "hash"
-          },
-          {
-            lineIndex: 2,
-            slots: [
-              { id: "slot0", index: 0, nodes: [{ id: "n22", key: "22", value: "data", x: 200, y: 120 }], x: 100, y: 100 },
-              { id: "slot1", index: 1, nodes: [{ id: "n15", key: "15", value: "data", x: 200, y: 170 }], x: 100, y: 150, isActive: true },
-              { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
-              { id: "slot3", index: 3, nodes: [{ id: "n10", key: "10", value: "data", x: 200, y: 270 }], x: 100, y: 250 },
-              { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
-              { id: "slot5", index: 5, nodes: [], x: 100, y: 350 },
-              { id: "slot6", index: 6, nodes: [], x: 100, y: 400 }
-            ],
-            message: "Index 1 is occupied - COLLISION! Probe next slot",
-            action: "collision"
-          },
-          {
-            lineIndex: 6,
-            slots: [
-              { id: "slot0", index: 0, nodes: [{ id: "n22", key: "22", value: "data", x: 200, y: 120 }], x: 100, y: 100 },
-              { id: "slot1", index: 1, nodes: [{ id: "n15", key: "15", value: "data", x: 200, y: 170 }], x: 100, y: 150 },
-              { id: "slot2", index: 2, nodes: [], x: 100, y: 200, isActive: true },
-              { id: "slot3", index: 3, nodes: [{ id: "n10", key: "10", value: "data", x: 200, y: 270 }], x: 100, y: 250 },
-              { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
-              { id: "slot5", index: 5, nodes: [], x: 100, y: 350 },
-              { id: "slot6", index: 6, nodes: [], x: 100, y: 400 }
-            ],
-            message: "Probe: index = (1 + 1) % 7 = 2 - EMPTY!",
-            action: "probe"
-          },
-          {
-            lineIndex: 7,
-            slots: [
-              { id: "slot0", index: 0, nodes: [{ id: "n22", key: "22", value: "data", x: 200, y: 120 }], x: 100, y: 100 },
-              { id: "slot1", index: 1, nodes: [{ id: "n15", key: "15", value: "data", x: 200, y: 170 }], x: 100, y: 150 },
-              { id: "slot2", index: 2, nodes: [{ id: "n29", key: "29", value: "data", x: 200, y: 220, isActive: true }], x: 100, y: 200 },
-              { id: "slot3", index: 3, nodes: [{ id: "n10", key: "10", value: "data", x: 200, y: 270 }], x: 100, y: 250 },
-              { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
-              { id: "slot5", index: 5, nodes: [], x: 100, y: 350 },
-              { id: "slot6", index: 6, nodes: [], x: 100, y: 400 }
-            ],
-            message: "Insert '29' at index 2",
-            action: "insert"
-          }
-        ]
-      },
+
+{
+  id: "linear-probing-insertion",
+  type: "visualization",
+  title: "Linear Probing: Insertion",
+  code: [
+    "function insertLinearProbing(table, key, value):",
+    "    index = hash(key) % table.size",
+    "    while table[index] is not empty:",
+    "        index = (index + 1) % table.size",
+    "    table[index] = (key, value)"
+  ],
+  visualization: {
+    slots: [
+      { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+      { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+      { id: "slot2", index: 2, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 220 }], x: 100, y: 200 },
+      { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+      { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+    ],
+    message: "'Bob' inserted at index 2 after probing from index 1"
+  },
+  executionSteps: [
+    {
+      lineIndex: 1,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Insert 'Bob': hash('Bob') = 1",
+      hashValue: 1,
+      key: "Bob",
+      action: "hash"
+    },
+    {
+      lineIndex: 3,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170, isCollision: true }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Collision at index 1! Probe to next slot: (1 + 1) % 5 = 2",
+      action: "collision"
+    },
+    {
+      lineIndex: 3,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200, isActive: true },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Index 2 is empty. Ready to insert.",
+      action: "probe"
+    },
+    {
+      lineIndex: 4,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 220, isActive: true }], x: 100, y: 200, isActive: true },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Insert 'Bob' at index 2",
+      action: "insert"
+    }
+  ]
+}
+,{
+  id: "linear-probing-searching",
+  type: "visualization",
+  title: "Linear Probing: Searching",
+  code: [
+    "function searchLinearProbing(table, key):",
+    "    index = hash(key) % table.size",
+    "    while table[index] is not empty:",
+    "        if table[index].key == key:",
+    "            return table[index].value",
+    "        index = (index + 1) % table.size",
+    "    return null"
+  ],
+  visualization: {
+    slots: [
+      { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+      { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+      { id: "slot2", index: 2, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 220, isTarget: true }], x: 100, y: 200 },
+      { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+      { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+    ],
+    message: "Found 'Bob' at index 2 after probing from index 1",
+    outputText: "345-678"
+  },
+  executionSteps: [
+    {
+      lineIndex: 1,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 220 }], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Search 'Bob': hash('Bob') = 1",
+      hashValue: 1,
+      key: "Bob",
+      action: "hash"
+    },
+    {
+      lineIndex: 3,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170, isActive: true }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 220 }], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Index 1 not empty. Check key: 'Alice' ≠ 'Bob'",
+      action: "search"
+    },
+    {
+      lineIndex: 5,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 220 }], x: 100, y: 200, isActive: true },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Probe to next: (1 + 1) % 5 = 2",
+      action: "probe"
+    },
+    {
+      lineIndex: 3,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 220, isTarget: true }], x: 100, y: 200, isActive: true },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Found 'Bob' at index 2! Return value: 345-678",
+      outputText: "345-678",
+      action: "search"
+    }
+  ]
+}
+,{
+  id: "linear-probing-deletion",
+  type: "visualization",
+  title: "Linear Probing: Deletion",
+  code: [
+    "function deleteLinearProbing(table, key):",
+    "    index = hash(key) % table.size",
+    "    while table[index] is not empty:",
+    "        if table[index].key == key:",
+    "            table[index] = DELETED",
+    "            return true",
+    "        index = (index + 1) % table.size",
+    "    return false"
+  ],
+  visualization: {
+    slots: [
+      { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+      { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+      { id: "slot2", index: 2, nodes: [{ id: "deleted", key: "DELETED", value: "", x: 200, y: 220 }], x: 100, y: 200 },
+      { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+      { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+    ],
+    message: "'Bob' marked as DELETED at index 2 (tombstone)"
+  },
+  executionSteps: [
+    {
+      lineIndex: 1,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 220 }], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Delete 'Bob': hash('Bob') = 1",
+      hashValue: 1,
+      key: "Bob",
+      action: "hash"
+    },
+    {
+      lineIndex: 3,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170, isActive: true }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 220 }], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Check index 1: 'Alice' ≠ 'Bob'",
+      action: "search"
+    },
+    {
+      lineIndex: 6,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 220 }], x: 100, y: 200, isActive: true },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Probe to (1 + 1) % 5 = 2",
+      action: "probe"
+    },
+    {
+      lineIndex: 3,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 220, isTarget: true }], x: 100, y: 200, isActive: true },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Found 'Bob' at index 2",
+      action: "search"
+    },
+    {
+      lineIndex: 4,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [{ id: "deleted", key: "DELETED", value: "", x: 200, y: 220, isActive: true }], x: 100, y: 200, isActive: true },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 }
+      ],
+      message: "Mark slot as DELETED (tombstone marker)",
+      action: "delete"
+    }
+  ]
+}
+,{
+  id: "quadratic-probing-insertion",
+  type: "visualization",
+  title: "Quadratic Probing: Insertion",
+  code: [
+    "function insertQuadraticProbing(table, key, value):",
+    "    index = hash(key) % table.size",
+    "    i = 0",
+    "    while table[index] is not empty:",
+    "        i = i + 1",
+    "        index = (hash(key) + i²) % table.size",
+    "    table[index] = (key, value)"
+  ],
+  visualization: {
+    slots: [
+      { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+      { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+      { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+      { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+      { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+      { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370 }], x: 100, y: 350 }
+    ],
+    message: "'Bob' inserted at index 5 using quadratic probe: 1 + 2² = 5"
+  },
+  executionSteps: [
+    {
+      lineIndex: 1,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [], x: 100, y: 350 }
+      ],
+      message: "Insert 'Bob': hash('Bob') = 1, i = 0",
+      hashValue: 1,
+      key: "Bob",
+      action: "hash"
+    },
+    {
+      lineIndex: 3,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170, isCollision: true }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [], x: 100, y: 350 }
+      ],
+      message: "Collision at index 1! i = 1",
+      action: "collision"
+    },
+    {
+      lineIndex: 5,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200, isActive: true },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [], x: 100, y: 350 }
+      ],
+      message: "Quadratic probe: (1 + 1²) % 6 = 2",
+      action: "probe"
+    },
+    {
+      lineIndex: 3,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200, isActive: true },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [], x: 100, y: 350 }
+      ],
+      message: "Index 2 is empty, but let's probe once more to demonstrate",
+      action: "probe"
+    },
+    {
+      lineIndex: 4,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [], x: 100, y: 350, isActive: true }
+      ],
+      message: "Actually probe: (1 + 2²) % 6 = 5",
+      action: "probe"
+    },
+    {
+      lineIndex: 6,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370, isActive: true }], x: 100, y: 350, isActive: true }
+      ],
+      message: "Insert 'Bob' at index 5",
+      action: "insert"
+    }
+  ]
+}
+,{
+  id: "quadratic-probing-searching",
+  type: "visualization",
+  title: "Quadratic Probing: Searching",
+  code: [
+    "function searchQuadraticProbing(table, key):",
+    "    index = hash(key) % table.size",
+    "    i = 0",
+    "    while table[index] is not empty:",
+    "        if table[index].key == key:",
+    "            return table[index].value",
+    "        i = i + 1",
+    "        index = (hash(key) + i²) % table.size",
+    "    return null"
+  ],
+  visualization: {
+    slots: [
+      { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+      { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+      { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+      { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+      { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+      { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370, isTarget: true }], x: 100, y: 350 }
+    ],
+    message: "Found 'Bob' at index 5 using quadratic probing",
+    outputText: "345-678"
+  },
+  executionSteps: [
+    {
+      lineIndex: 1,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370 }], x: 100, y: 350 }
+      ],
+      message: "Search 'Bob': hash('Bob') = 1, i = 0",
+      hashValue: 1,
+      key: "Bob",
+      action: "hash"
+    },
+    {
+      lineIndex: 4,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170, isActive: true }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370 }], x: 100, y: 350 }
+      ],
+      message: "Check index 1: 'Alice' ≠ 'Bob'",
+      action: "search"
+    },
+    {
+      lineIndex: 7,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200, isActive: true },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370 }], x: 100, y: 350 }
+      ],
+      message: "Probe: i = 1, (1 + 1²) % 6 = 2",
+      action: "probe"
+    },
+    {
+      lineIndex: 3,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200, isActive: true },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370 }], x: 100, y: 350 }
+      ],
+      message: "Index 2 is empty, continue probing",
+      action: "probe"
+    },
+    {
+      lineIndex: 7,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370 }], x: 100, y: 350, isActive: true }
+      ],
+      message: "Probe: i = 2, (1 + 2²) % 6 = 5",
+      action: "probe"
+    },
+    {
+      lineIndex: 4,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370, isTarget: true }], x: 100, y: 350, isActive: true }
+      ],
+      message: "Found 'Bob' at index 5! Return: 345-678",
+      outputText: "345-678",
+      action: "search"
+    }
+  ]
+}
+,{
+  id: "quadratic-probing-deletion",
+  type: "visualization",
+  title: "Quadratic Probing: Deletion",
+  code: [
+    "function deleteQuadraticProbing(table, key):",
+    "    index = hash(key) % table.size",
+    "    i = 0",
+    "    while table[index] is not empty:",
+    "        if table[index].key == key:",
+    "            table[index] = DELETED",
+    "            return true",
+    "        i = i + 1",
+    "        index = (hash(key) + i²) % table.size",
+    "    return false"
+  ],
+  visualization: {
+    slots: [
+      { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+      { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+      { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+      { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+      { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+      { id: "slot5", index: 5, nodes: [{ id: "deleted", key: "DELETED", value: "", x: 200, y: 370 }], x: 100, y: 350 }
+    ],
+    message: "'Bob' deleted at index 5 (tombstone marker)"
+  },
+  executionSteps: [
+    {
+      lineIndex: 1,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370 }], x: 100, y: 350 }
+      ],
+      message: "Delete 'Bob': hash('Bob') = 1, i = 0",
+      hashValue: 1,
+      key: "Bob",
+      action: "hash"
+    },
+    {
+      lineIndex: 4,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170, isActive: true }], x: 100, y: 150, isActive: true },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370 }], x: 100, y: 350 }
+      ],
+      message: "Check index 1: 'Alice' ≠ 'Bob'",
+      action: "search"
+    },
+    {
+      lineIndex: 8,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370 }], x: 100, y: 350, isActive: true }
+      ],
+      message: "Probe: i = 2, (1 + 2²) % 6 = 5",
+      action: "probe"
+    },
+    {
+      lineIndex: 4,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370, isTarget: true }], x: 100, y: 350, isActive: true }
+      ],
+      message: "Found 'Bob' at index 5",
+      action: "search"
+    },
+    {
+      lineIndex: 5,
+      slots: [
+        { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
+        { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
+        { id: "slot2", index: 2, nodes: [], x: 100, y: 200 },
+        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+        { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
+        { id: "slot5", index: 5, nodes: [{ id: "deleted", key: "DELETED", value: "", x: 200, y: 370, isActive: true }], x: 100, y: 350, isActive: true }
+      ],
+      message: "Mark as DELETED (tombstone)",
+      action: "delete"
+    }
+  ]
+}
+,
       {
         id: "collision-mcq-1",
         type: "mcq",
