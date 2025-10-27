@@ -97,13 +97,13 @@ export const hashingLessons: HashingLesson[] = [
         chatbot: [
           {
             question: "With 100,000 books in a simple list, how would you find this specific book? What's the problem with this approach?",
-            context: "You have 100,000 books stored in order of arrival. To find 'Advanced Algorithms', you'd have to check each book one by one from the beginning until you find it.",
+            context: "Books are stored sequentially in a list. To find 'Advanced Algorithms', one would perform a linear search—checking each book until the match is found. This approach is inefficient, with a time complexity of O(n), since every lookup may require scanning through most or all of the list.",
             hint: "Think about how many books you might need to check in the worst case. Is there a faster way?",
             topic: "hashing"
           },
           {
             question: "What if instead of storing books by arrival order, we could organize them so that finding any book takes almost the same time, whether it's the 1st book or the 100,000th book?",
-            context: "Instead of linear search through all books, what if we had a system that could directly tell us the location of any book based on its title?",
+            context: "Organizing books based on a computed key (like a hash of the title) allows direct access to their position. This is the principle of hashing, which provides near constant-time lookups, O(1), compared to linear search’s O(n).",
             hint: "Think about how a phone book or dictionary works - you don't start from page 1 to find a word starting with 'Z'.",
             topic: "hashing"
           }
@@ -117,13 +117,13 @@ export const hashingLessons: HashingLesson[] = [
         chatbot: [
           {
             question: "If student records are stored in a simple array, what's the issue with finding a student by roll number?",
-            context: "With 10,000 students in an array, you'd need to check each record one by one until you find the matching roll number. This could mean checking all 10,000 records in the worst case.",
+            context: "In a simple array, to find a student by roll number, you must perform a linear search—comparing each record one by one until you find a match. This has a time complexity of O(n), which becomes inefficient as the number of students increases.",
             hint: "Think about the time it takes when the student you're looking for is at the end of the list.",
             topic: "hashing"
           },
           {
             question: "What if we could use the roll number itself to directly calculate where to store/find the student's record?",
-            context: "Instead of searching through all records, what if we had a mathematical way to convert the roll number into a storage location?",
+            context: "By applying a hash function to the roll number, we can compute a direct index in memory where that student's data is stored. This method allows nearly constant-time O(1) lookups, making it much faster than linear search. This approach is the foundation of hashing.",
             hint: "This is the core idea behind hashing - using the key (roll number) to compute a location.",
             topic: "hashing"
           }
@@ -137,13 +137,13 @@ export const hashingLessons: HashingLesson[] = [
         chatbot: [
           {
             question: "How do you think your phone finds 'John Smith' so quickly without checking all 2,000 contacts?",
-            context: "Modern phones use efficient data structures. They don't use linear search through all contacts. Instead, they use techniques that can directly compute where to look based on the name.",
+            context: "The phone uses efficient lookup structures like hash tables or indexed maps. It applies a hash function to the contact name (e.g., 'John Smith') to compute a direct memory location or index where that contact's details are stored. This allows retrieval in nearly constant time O(1), instead of sequentially checking all contacts as in a linear search.",
             hint: "The phone uses the name 'John Smith' to calculate a location where this contact would be stored.",
             topic: "hashing"
           },
           {
             question: "What if multiple people have similar names like 'John Smith' and 'John Doe'? How would the system handle this?",
-            context: "This is a common problem in hashing called 'collisions' - when different keys map to the same location. There are techniques to handle this.",
+            context: "When different keys (names) produce the same hash value, a collision occurs. Hash-based systems handle collisions using techniques like chaining (storing multiple entries in a list at the same index) or open addressing (finding the next available slot). These ensure all entries can still be retrieved correctly despite collisions.",
             hint: "Think about what happens when two different names result in the same storage location.",
             topic: "hashing"
           }
@@ -518,13 +518,13 @@ for each character c in string:
         chatbot: [
           {
             question: "What happens when two different cars are assigned the same parking spot? How would you solve this problem?",
-            context: "This is exactly what happens in hash tables when two different keys hash to the same index - it's called a collision. We need strategies to handle this situation.",
+            context: "When two different keys (in this case, license plates) produce the same hash value, they map to the same index in the hash table. This situation is called a collision. Collisions are a normal part of hashing and require a resolution strategy to ensure both items can be stored and retrieved correctly.",
             hint: "Think about real-world solutions: what would a parking garage do if two cars need the same spot?",
             topic: "hashing collision"
           },
           {
             question: "Can you think of different ways to handle this collision? What are the trade-offs of each approach?",
-            context: "There are two main approaches: 1) Create a chain/list at each spot to hold multiple cars, or 2) Find another empty spot nearby. Each has different pros and cons.",
+            context: "There are two primary methods for resolving collisions: (1) **Separate chaining**, where multiple entries at the same index are stored in a linked list or chain; and (2) **Open addressing**, where the algorithm searches for the next available slot using techniques like linear or quadratic probing. Chaining is simple and flexible, while open addressing can be faster but may cause clustering if not managed properly.",
             hint: "One approach modifies the structure of each parking spot, another approach looks for alternative spots.",
             topic: "hashing collision"
           }
@@ -935,13 +935,13 @@ Where:
         chatbot: [
           {
             question: "What happens to service quality (finding/assigning tables) as the restaurant gets busier?",
-            context: "When the restaurant has few customers (low load factor), finding and assigning tables is quick. As it gets busier (higher load factor), there are more conflicts and it takes longer to manage reservations.",
+            context: "In hashing, the load factor (α) measures how full a hash table is, calculated as the ratio of stored items to available slots. As α increases, the likelihood of collisions rises, leading to longer lookup and insertion times. Similarly, as the restaurant fills up, it becomes harder to find available tables quickly, which mirrors reduced hash table performance at high load factors.",
             hint: "Think about how collision frequency increases with more customers competing for the same tables.",
             topic: "load factor performance"
           },
           {
             question: "At what point do you think the restaurant should consider expanding (adding more tables) or changing their reservation system?",
-            context: "Just like hash tables, restaurants have optimal occupancy levels. Too empty wastes space, too full creates chaos. Hash tables typically resize when load factor reaches 0.75.",
+            context: "When the load factor becomes too high, performance degrades due to frequent collisions and probing. To maintain efficiency, hash tables are typically resized (rehashing) when the load factor approaches around 0.7–0.8. This ensures faster lookups and balanced performance, similar to how a restaurant might add more tables or improve scheduling when nearing full capacity.",
             hint: "Consider the trade-off between space utilization and service quality.",
             topic: "load factor performance"
           }
@@ -1248,19 +1248,19 @@ Examples:
         chatbot: [
           {
             question: "Why shouldn't we store passwords directly? What happens if the database gets hacked?",
-            context: "If passwords are stored in plain text, a database breach exposes all user passwords immediately. Hackers can then access user accounts on other websites where users reused passwords.",
+            context: "Storing passwords in plain text is a major security risk. If the database is compromised, attackers can instantly see and use all user passwords. Since many users reuse passwords across sites, this can lead to large-scale account breaches and data theft.",
             hint: "Think about the consequences if someone gains unauthorized access to the database.",
             topic: "password security hashing"
           },
           {
             question: "How does hashing help protect passwords even if the database is compromised?",
-            context: "Hashing is a one-way function - you can't easily reverse it to get the original password. Even if hackers see the hash values, they can't directly determine the original passwords.",
+            context: "Hashing converts passwords into fixed-length, irreversible values using a one-way mathematical function. Even if attackers obtain the hashes, they cannot directly recover the original passwords. This provides a layer of security by making stolen data much harder to exploit.",
             hint: "Hash functions are designed to be irreversible - you can't unhash to get the original input.",
             topic: "password security hashing"
           },
           {
             question: "If hashing is one-way, how does the system verify a user's password during login?",
-            context: "During login, the system hashes the entered password and compares it with the stored hash. If they match, the password is correct.",
+            context: "During authentication, the system hashes the entered password using the same algorithm and compares the result to the stored hash. If the two hashes match, access is granted. This process ensures verification without ever storing or revealing the plain text password.",
             hint: "The system doesn't need to unhash - it just needs to check if hash(entered_password) equals stored_hash.",
             topic: "password security hashing"
           }
@@ -1765,13 +1765,13 @@ Reduces variance in probe distances without resizing as frequently.`
         chatbot: [
           {
             question: "How could an attacker figure out which keys cause hash collisions?",
-            context: "If the hash function is simple and predictable (like key % table_size), an attacker can mathematically compute keys that will hash to the same value. They can then send many requests with these colliding keys.",
+            context: "If the hash function used by the server is simple, predictable, or publicly known (e.g., key % table_size or other deterministic patterns), an attacker can analyze or reverse-engineer the function to find multiple keys that produce the same hash value. By sending requests with these colliding keys, they can deliberately trigger performance degradation.",
             hint: "Think about how predictable hash functions can be reverse-engineered or analyzed.",
             topic: "hash security"
           },
           {
             question: "What defenses can we implement against hash flooding attacks?",
-            context: "Defenses include: using cryptographic hash functions, adding random salts, limiting request rates, using different hash functions for different clients, and monitoring for suspicious collision patterns.",
+            context: "To mitigate hash flooding attacks, systems can use stronger, non-deterministic hash functions such as cryptographic hashes (e.g., SHA-256) with per-instance randomization or salting. Additional defenses include rate limiting, dynamic hash seeding per session, using balanced data structures like trees instead of lists for collision handling, and monitoring for abnormal collision or request patterns.",
             hint: "Consider both making collisions harder to create and limiting the impact when they occur.",
             topic: "hash security"
           }
