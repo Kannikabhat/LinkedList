@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+python-multipart
+sentence-transformers>=2.2.2
+faiss-cpu>=1.7.4
+rank_bm25
+transformers>=4.30.0
+torch
+pdfplumber
+tqdm
+uvicorn
+python-dotenv
+scikit-learn
+pydantic
+typing_extensions

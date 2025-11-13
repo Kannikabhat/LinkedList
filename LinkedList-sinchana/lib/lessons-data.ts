@@ -86,25 +86,25 @@ export const lessons: Lesson[] = [
       "chatbot": [
         {
           "question": "If you want to insert an element at the beginning of an array, what happens?",
-          "context": "Arrays are stored in continuous memory. So inserting at the beginning means shifting every element to the right.",
+          "context": "In arrays, elements are stored in contiguous memory locations. Inserting at the beginning requires shifting all existing elements one position to the right to make space for the new element. This operation has O(n) time complexity.",
           "hint": "Think about the shifting cost when inserting at index 0.",
           "topic": "linked list"
         },
         {
           "question": "Okay, then what if you want to delete an element in the middle of an array — is it efficient?",
-          "context": "Deletion also causes shifting because the gap needs to be filled.",
+          "context": "When an element is deleted from the middle of an array, all subsequent elements must be shifted one position to the left to fill the gap. This also has O(n) time complexity, making deletions inefficient for large arrays.",
           "hint": "Think about how elements after the deleted one need to move.",
           "topic": "linked list"
         },
         {
           "question": "Now imagine your array is full and you want to add one more element. What do you do?",
-          "context": "You usually create a bigger array and copy all elements over, which is costly.",
+          "context": "If an array is at full capacity, a new larger array must be created, and all existing elements copied into it before adding the new one. This resizing operation is time and memory expensive, with O(n) cost for copying.",
           "hint": "Think about resizing — is that efficient?",
           "topic": "linked list"
         },
         {
           "question": "So, wouldn’t it be better if elements didn’t depend on a fixed continuous memory block, but instead could just point to the next element?",
-          "context": "This way, insertion and deletion can be done efficiently without shifting or resizing.",
+          "context": "A linked list stores elements (nodes) in separate memory locations connected by pointers. This allows efficient insertion and deletion without shifting elements or resizing memory, as only the links between nodes are adjusted. However, it requires extra space for storing pointers.",
           "hint": "What data structure connects elements using pointers instead of continuous memory?",
           "topic": "linked list"
         }
