@@ -505,8 +505,479 @@ for each character c in string:
       }
     ]
   },
+//   {
+//   id: 3,
+//   title: "Understanding Mapping & Collisions",
+//   description: "From one-to-one mapping to many-to-one and how collisions naturally occur",
+//   steps: [
+//     {
+//       id: "mapping-content-1",
+//       type: "content",
+//       title: "🔵 One-to-One Mapping (Ideal World)",
+//       content: `In an ideal world, every key maps to one unique slot.
+// This is called **one-to-one mapping**.
+
+// Example: Departments
+// 1 → HR
+// 2 → Finance
+// 3 → Marketing
+// 4 → Tech
+
+// Here, keys are small, fixed, predictable.
+// Because the key space is limited, **no collisions happen**.
+
+// But this is unrealistic for real hashing systems.`,
+//     },
+
+//     {
+//       id: "visualization-1",
+//       type: "visualization",
+//       title: "🔵 Visualization – Perfect One-to-One Mapping",
+//       visualization: {
+//         slots: [
+//           {
+//             id: "slot-1",
+//             index: 1,
+//             x: 100,
+//             y: 100,
+//             nodes: [
+//               {
+//                 id: "node-hr",
+//                 key: "1",
+//                 value: "HR",
+//                 x: 100,
+//                 y: 100
+//               }
+//             ]
+//           },
+//           {
+//             id: "slot-2",
+//             index: 2,
+//             x: 250,
+//             y: 100,
+//             nodes: [
+//               {
+//                 id: "node-fin",
+//                 key: "2",
+//                 value: "Finance",
+//                 x: 250,
+//                 y: 100
+//               }
+//             ]
+//           },
+//           {
+//             id: "slot-3",
+//             index: 3,
+//             x: 400,
+//             y: 100,
+//             nodes: [
+//               {
+//                 id: "node-mark",
+//                 key: "3",
+//                 value: "Marketing",
+//                 x: 400,
+//                 y: 100
+//               }
+//             ]
+//           },
+//           {
+//             id: "slot-4",
+//             index: 4,
+//             x: 550,
+//             y: 100,
+//             nodes: [
+//               {
+//                 id: "node-tech",
+//                 key: "4",
+//                 value: "Tech",
+//                 x: 550,
+//                 y: 100
+//               }
+//             ]
+//           }
+//         ],
+//         message: "Each key maps to its own slot. Perfect mapping — no collisions."
+//       }
+//     },
+
+//     {
+//       id: "mapping-content-2",
+//       type: "content",
+//       title: "🟠 Why One-to-One Mapping Fails",
+//       content: `Real-world keys are large and unpredictable.
+// They can be:
+// - names ("Kannika", "Ramesh")
+// - emails ("abc@gmail.com")
+// - random strings
+// - huge numbers
+
+// We cannot create a unique slot for every possible key.
+// The key space is too large.
+// Therefore, we compress keys into a fixed-size table → This causes collisions.`,
+//     },
+
+//     {
+//       id: "visualization-2",
+//       type: "visualization",
+//       title: "🟠 Visualization – Many-to-One Mapping Begins",
+//       visualization: {
+//         slots: [
+//           { id: "slot-0", index: 0, x: 150, y: 100, nodes: [] },
+//           { id: "slot-1", index: 1, x: 300, y: 100, nodes: [] },
+//           { id: "slot-2", index: 2, x: 450, y: 100, nodes: [] }
+//         ],
+//         message: "We now have a small table (0, 1, 2). Keys must fit into these slots."
+//       }
+//     },
+
+//     {
+//       id: "execution-many-to-one",
+//       type: "visualization",
+//       title: "🟠 Execution – Keys Hash to Same Slot",
+//       executionSteps: [
+//         {
+//           lineIndex: 1,
+//           message: "Hashing 'Kannika' → slot 1",
+//           hashValue: 1,
+//           slots: [
+//             { id: "slot-0", index: 0, x: 150, y: 100, nodes: [] },
+//             {
+//               id: "slot-1",
+//               index: 1,
+//               x: 300,
+//               y: 100,
+//               nodes: [
+//                 {
+//                   id: "node-k",
+//                   key: "Kannika",
+//                   value: "Data",
+//                   x: 300,
+//                   y: 100
+//                 }
+//               ]
+//             },
+//             { id: "slot-2", index: 2, x: 450, y: 100, nodes: [] }
+//           ]
+//         },
+
+//         {
+//           lineIndex: 2,
+//           message: "Hashing 'Ramesh' → slot 1 again",
+//           hashValue: 1,
+//           action: "collision",
+//           slots: [
+//             { id: "slot-0", index: 0, x: 150, y: 100, nodes: [] },
+//             {
+//               id: "slot-1",
+//               index: 1,
+//               x: 300,
+//               y: 100,
+//               nodes: [
+//                 {
+//                   id: "node-k",
+//                   key: "Kannika",
+//                   value: "Data",
+//                   x: 300,
+//                   y: 100
+//                 },
+//                 {
+//                   id: "node-r",
+//                   key: "Ramesh",
+//                   value: "Data",
+//                   x: 300,
+//                   y: 140,
+//                   isCollision: true
+//                 }
+//               ]
+//             },
+//             { id: "slot-2", index: 2, x: 450, y: 100, nodes: [] }
+//           ]
+//         }
+//       ]
+//     },
+
+//     {
+//       id: "collision-content",
+//       type: "content",
+//       title: "🔴 Collision Explained",
+//       content: `A **collision** occurs when two different keys map to the same slot.
+
+// This is normal and expected due to the **pigeonhole principle**:
+// When many keys are compressed into fewer slots, multiple keys must land in the same place.
+
+// Now that collisions occur, we must learn how to handle them (chaining, linear probing, etc.).`,
+//     }
+//   ]
+// }
+{
+  id: 3,
+  title: "Introduction to Collision in Hashing",
+  description: "Explains how many-to-one mapping in hashing leads to collisions.",
+  steps: [
+    {
+      id: "collision-intro-1",
+      type: "content",
+      title: "What is Hashing?",
+      content: "Hashing is like a smart filing system. Instead of searching through all your files to find something, you use a special formula to instantly know exactly where to look.\n\nImagine a library with 1000 books but only 10 shelves. A hash function is like a librarian who looks at a book's ID number and calculates which shelf it belongs on. This way, finding any book takes just one lookup instead of searching everywhere!\n\nIn programming, a hash function takes a key (like a student ID) and converts it into an array index (like a locker number) using a mathematical formula.",
+      code: [
+        "function hashFunction(key, tableSize) {",
+        "  return key % tableSize;",
+        "}",
+        "",
+        "// Example: Find which locker (0-9) for student ID",
+        "hashFunction(142, 10);  // Returns 2",
+        "hashFunction(237, 10);  // Returns 7",
+        "hashFunction(485, 10);  // Returns 5"
+      ]
+    },
+    {
+      id: "collision-intro-2",
+      type: "visualization",
+      title: "Ideal One-to-One Mapping",
+      content: "In a perfect world, each unique key would map to its own unique slot. This is called one-to-one mapping - like everyone getting their own personal locker. No sharing, no conflicts, instant access!",
+      visualization: {
+        slots: [
+          {
+            id: "slot-0",
+            index: 0,
+            nodes: [],
+            x: 80,
+            y: 100
+          },
+          {
+            id: "slot-1",
+            index: 1,
+            nodes: [
+              {
+                id: "node-237",
+                key: "237",
+                value: "Alex",
+                x: 220,
+                y: 160,
+                isActive: true
+              }
+            ],
+            x: 80,
+            y: 160,
+            isActive: true
+          },
+          {
+            id: "slot-2",
+            index: 2,
+            nodes: [
+              {
+                id: "node-142",
+                key: "142",
+                value: "Jordan",
+                x: 220,
+                y: 220,
+                isActive: true
+              }
+            ],
+            x: 80,
+            y: 220,
+            isActive: true
+          },
+          {
+            id: "slot-3",
+            index: 3,
+            nodes: [],
+            x: 80,
+            y: 280
+          },
+          {
+            id: "slot-4",
+            index: 4,
+            nodes: [],
+            x: 80,
+            y: 340
+          },
+          {
+            id: "slot-5",
+            index: 5,
+            nodes: [
+              {
+                id: "node-485",
+                key: "485",
+                value: "Casey",
+                x: 220,
+                y: 400,
+                isActive: true
+              }
+            ],
+            x: 80,
+            y: 400,
+            isActive: true
+          },
+          {
+            id: "slot-6",
+            index: 6,
+            nodes: [],
+            x: 80,
+            y: 460
+          },
+          {
+            id: "slot-7",
+            index: 7,
+            nodes: [],
+            x: 80,
+            y: 520
+          },
+          {
+            id: "slot-8",
+            index: 8,
+            nodes: [],
+            x: 80,
+            y: 580
+          },
+          {
+            id: "slot-9",
+            index: 9,
+            nodes: [],
+            x: 80,
+            y: 640
+          }
+        ],
+        message: "Perfect scenario: Each key maps to a different slot",
+        outputText: "hash(237) → slot 7\nhash(142) → slot 2\nhash(485) → slot 5\n\nEvery student has their own locker!"
+      }
+    },
+    {
+      id: "collision-intro-3",
+      type: "content",
+      title: "Why One-to-One Isn't Always Possible",
+      content: "Here's the reality check: imagine a university with 5 departments (CS, Math, Physics, Chemistry, Biology) but 500 students. Each student must be assigned to one department.\n\nOr think about it this way: you have 100 possible student IDs but only 10 hash table slots. Mathematically, multiple students will end up in the same slot!\n\nThis is called the \"pigeonhole principle\" - if you have more pigeons than holes, at least one hole must contain multiple pigeons. In hashing, when multiple keys produce the same index, they collide.",
+      code: [
+        "const tableSize = 5;  // Only 5 slots",
+        "",
+        "// But we have many students...",
+        "hashFunction(142, tableSize);  // Returns 2",
+        "hashFunction(237, tableSize);  // Returns 2 ⚠️ COLLISION!",
+        "hashFunction(312, tableSize);  // Returns 2 ⚠️ COLLISION!",
+        "hashFunction(485, tableSize);  // Returns 0",
+        "",
+        "// Three different students want slot 2!",
+        "// This is many-to-one mapping"
+      ]
+    },
+    {
+      id: "collision-intro-4",
+      type: "visualization",
+      title: "Many-to-One Mapping Visualization",
+      content: "Here's what a collision looks like. Multiple keys map to the same slot - like multiple students being assigned to the same locker. The system can handle it, but it creates a conflict that needs to be resolved.",
+      visualization: {
+        slots: [
+          {
+            id: "slot-0",
+            index: 0,
+            nodes: [
+              {
+                id: "node-485",
+                key: "485",
+                value: "Casey",
+                x: 220,
+                y: 100,
+                isActive: false
+              }
+            ],
+            x: 80,
+            y: 100
+          },
+          {
+            id: "slot-1",
+            index: 1,
+            nodes: [],
+            x: 80,
+            y: 160
+          },
+          {
+            id: "slot-2",
+            index: 2,
+            nodes: [
+              {
+                id: "node-142",
+                key: "142",
+                value: "Student A",
+                x: 220,
+                y: 220,
+                isActive: false
+              },
+              {
+                id: "node-237",
+                key: "237",
+                value: "Student B",
+                x: 360,
+                y: 220,
+                isActive: true,
+                isCollision: true
+              },
+              {
+                id: "node-312",
+                key: "312",
+                value: "Student C",
+                x: 500,
+                y: 220,
+                isActive: false,
+                isCollision: true
+              }
+            ],
+            x: 80,
+            y: 220,
+            isActive: true
+          },
+          {
+            id: "slot-3",
+            index: 3,
+            nodes: [],
+            x: 80,
+            y: 280
+          },
+          {
+            id: "slot-4",
+            index: 4,
+            nodes: [],
+            x: 80,
+            y: 340
+          }
+        ],
+        activeSlotIndex: 2,
+        message: "Collision detected! Three keys map to slot 2",
+        outputText: "hash(142) → slot 2\nhash(237) → slot 2  ⚠️\nhash(312) → slot 2  ⚠️\n\nThree different IDs want the same location!"
+      }
+    },
+    {
+      id: "collision-intro-6",
+      type: "mcq",
+      title: "Quick Check",
+      mcq: {
+        id: "mcq-collision-intro",
+        question: "Why do collisions occur in hash tables, even with a good hash function?",
+        options: [
+          {
+            id: "opt-1",
+            text: "The hash function is broken and needs to be replaced",
+            isCorrect: false
+          },
+          {
+            id: "opt-2",
+            text: "Because we often have more keys than available slots in the table",
+            isCorrect: true
+          },
+          {
+            id: "opt-3",
+            text: "Because modulo operator always causes collisions",
+            isCorrect: false
+          }
+        ],
+        explanation: "Collisions are inevitable in real-world hashing because we typically have many more possible keys than available slots. Even with a perfect hash function, the pigeonhole principle guarantees that when you have more items than containers, some items must share a container. This isn't a flaw - it's a fundamental mathematical reality. Good hash tables are designed to handle collisions efficiently using techniques like chaining or probing."
+      }
+    }
+  ]
+}
+
+,
   {
-    id: 3,
+    id: 4,
     title: "Collision Handling",
     description: "Understanding and implementing collision resolution techniques",
     steps: [
@@ -1461,7 +1932,7 @@ for each character c in string:
     ]
   },
   {
-    id: 4,
+    id: 5,
     title: "Hash Table Performance",
     description: "Analyzing load factors, time complexity, and performance optimization",
     steps: [
@@ -1698,7 +2169,7 @@ Resizing is expensive but infrequent, so average performance remains excellent.`
     ]
   },
   {
-    id: 5,
+    id: 6,
     title: "Applications of Hashing",
     description: "Real-world applications and use cases of hash tables",
     steps: [
@@ -1971,7 +2442,7 @@ All these implementations provide O(1) average-case performance for basic operat
     ]
   },
   {
-    id: 6,
+    id: 7,
     title: "Advanced Hashing Techniques",
     description: "Exploring sophisticated hashing methods and specialized applications",
     steps: [
@@ -2221,7 +2692,7 @@ file_hash = SHA-256(file_contents)
     ]
   },
   {
-    id: 7,
+    id: 8,
     title: "Practical Concerns & Trade-offs",
     description: "Real-world considerations when implementing hash tables",
     steps: [
@@ -2556,7 +3027,7 @@ unordered_map<Key, Value> hash_storage;  // O(n) worst-case possible
     ]
   },
   {
-    id: 8,
+    id: 9,
     title: "Case Studies",
     description: "Real-world implementations in popular systems and languages",
     steps: [
