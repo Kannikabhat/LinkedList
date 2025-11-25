@@ -48,6 +48,7 @@ import { useState } from 'react';
 import { hashingLessons } from '@/lib/hashing-data';
 import HashLessonViewer from '@/components/HashLessonViewer'
 import LessonSelector from '@/components/LessonSelector';
+import ChatbotSidebar from "@/components/ChatbotSidebar";
 
 export default function HashingPage() {
   const [currentLessonId, setCurrentLessonId] = useState<number | null>(null);
@@ -75,11 +76,14 @@ export default function HashingPage() {
   if (!currentLesson) return <div>Lesson not found</div>;
 
   return (
-   <HashLessonViewer
-  lesson={currentLesson}
-  currentStep={currentStep}
-  onStepChange={handleStepChange}
-  onBackToMenu={handleBackToMenu}
-/>
+    <>
+      <HashLessonViewer
+      lesson={currentLesson}
+      currentStep={currentStep}
+      onStepChange={handleStepChange}
+      onBackToMenu={handleBackToMenu}
+      />
+      <ChatbotSidebar />
+    </>
   );
 }

@@ -1766,7 +1766,7 @@ for each character c in string:
         { id: "slot0", index: 0, nodes: [{ id: "n1", key: "John", value: "123-456", x: 200, y: 120 }], x: 100, y: 100 },
         { id: "slot1", index: 1, nodes: [{ id: "n2", key: "Alice", value: "234-567", x: 200, y: 170 }], x: 100, y: 150 },
         { id: "slot2", index: 2, nodes: [], x: 100, y: 200, isActive: true },
-        { id: "slot3", index: 3, nodes: [], x: 100, y: 250 },
+              { id: "slot3", index: 3, nodes: [{ id: "n10", key: "10", value: "data", x: 200, y: 270 }], x: 100, y: 250 },
         { id: "slot4", index: 4, nodes: [], x: 100, y: 300 },
         { id: "slot5", index: 5, nodes: [{ id: "n3", key: "Bob", value: "345-678", x: 200, y: 370 }], x: 100, y: 350 }
       ],

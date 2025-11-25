@@ -14,6 +14,6 @@ def clean_text(input_path, output_path):
 
 if __name__ == "__main__":
     clean_text(
-        input_path="dsa_rag_opendsa/data/textbook_raw.txt",
-        output_path="dsa_rag_opendsa/data/textbook_clean.txt"
+        input_path="data/textbook_raw.txt",
+        output_path="data/textbook_clean.txt"
     )

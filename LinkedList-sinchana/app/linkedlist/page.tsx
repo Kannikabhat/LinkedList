@@ -48,6 +48,7 @@ import { useState } from 'react';
 import { lessons } from '@/lib/lessons-data';
 import LessonViewer from '@/components/LessonViewer';
 import LessonSelector from '@/components/LessonSelector';
+import ChatbotSidebar from "@/components/ChatbotSidebar";
 
 export default function LinkedListPage() {
   const [currentLessonId, setCurrentLessonId] = useState<number | null>(null);
@@ -75,11 +76,14 @@ export default function LinkedListPage() {
   if (!currentLesson) return <div>Lesson not found</div>;
 
   return (
-    <LessonViewer
-      lesson={currentLesson}
-      currentStep={currentStep}
-      onStepChange={handleStepChange}
-      onBackToMenu={handleBackToMenu}
-    />
+    <>
+      <LessonViewer
+        lesson={currentLesson}
+        currentStep={currentStep}
+        onStepChange={handleStepChange}
+        onBackToMenu={handleBackToMenu}
+      />
+      <ChatbotSidebar />
+    </>
   );
 }

@@ -140,7 +140,8 @@ Your task:
 4. If the student misses any question, ask him the question again.
 5. If the student makes multiple incorrect attempts, eventually provide the correct answer with a full explanation.
 6. Keep the feedback short, clear, and constructive.
-
+7. If the student says he doesn't know the answer, give them the answer and do not ask further questions.
+8. Dont give any visuals hint.
 Respond ONLY in this exact JSON format (no extra text, no explanations):
 {
   "feedback": "your feedback here",

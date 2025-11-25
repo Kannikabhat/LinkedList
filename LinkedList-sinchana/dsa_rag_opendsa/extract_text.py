@@ -10,6 +10,6 @@ def extract_text_from_pdf(pdf_path, output_txt):
 
 if __name__ == "__main__":
     extract_text_from_pdf(
-        pdf_path="dsa_rag_opendsa/data/textbook.pdf",
-        output_txt="dsa_rag_opendsa/data/textbook_raw.txt"
+        pdf_path="data/textbook.pdf",
+        output_txt="data/textbook_raw.txt"
     )

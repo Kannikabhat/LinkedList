@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/dsa_rag_opendsa/__pycache__/
+/dsa_rag_opendsa/venv/
