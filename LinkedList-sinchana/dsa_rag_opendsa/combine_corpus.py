@@ -5,6 +5,11 @@ files = [
     "data/wikipedia_hashing.txt",
     "data/gfg_linked_list.txt",
     "data/gfg_hashing.txt",
+    "data/wikipedia_turing_machine.txt",
+    "data/gfg_turing_machine.txt",
+    "data/wikipedia_array.txt",
+    "data/gfg_array.txt",
+    "data/gfg_array_guide.txt",
 ]
 
 output = "data/combined_corpus.txt"

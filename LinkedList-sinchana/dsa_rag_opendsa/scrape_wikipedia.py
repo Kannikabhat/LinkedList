@@ -51,3 +51,12 @@ if __name__ == "__main__":
         title="Hash_function",
         output_path="data/wikipedia_hashing.txt"
     )
+
+    scrape_wikipedia_page(
+        title="Turing_machine",
+        output_path="data/wikipedia_turing_machine.txt"
+    )
+    scrape_wikipedia_page(
+        title="Array_(data_structure)",
+        output_path="data/wikipedia_array.txt"
+    )

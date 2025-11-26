@@ -51,3 +51,17 @@ if __name__ == "__main__":
         url="https://www.geeksforgeeks.org/hashing-data-structure/",
         output_path="data/gfg_hashing.txt"
     )
+
+    scrape_gfg(
+        url="https://www.geeksforgeeks.org/theory-of-computation/turing-machine-in-toc/",
+        output_path="data/gfg_turing_machine.txt"
+    )
+
+    scrape_gfg(
+        url="https://www.geeksforgeeks.org/dsa/what-is-array/",
+        output_path="data/gfg_array.txt"
+    )
+    scrape_gfg(
+        url="https://www.geeksforgeeks.org/dsa/array-data-structure-guide/",
+        output_path="data/gfg_array_guide.txt"
+    )

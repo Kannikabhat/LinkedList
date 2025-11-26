@@ -43,7 +43,6 @@
 // }
 
 "use client";
-
 import { useState } from 'react';
 import { hashingLessons } from '@/lib/hashing-data';
 import HashLessonViewer from '@/components/HashLessonViewer'

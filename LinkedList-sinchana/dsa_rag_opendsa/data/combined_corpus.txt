@@ -26816,3 +26816,428 @@ Hash
 DSA
 
 
+A Turing machine is a mathematical model of computation describing an abstract machine[1] that manipulates symbols on a strip of tape according to a table of rules.[2] Despite the model's simplicity, it is capable of implementing any computer algorithm.[3]
+The machine operates on an infinite[4] memory tape divided into discrete cells,[5] each of which can hold a single symbol drawn from a finite set of symbols called the alphabet of the machine. It has a "head" that, at any point in the machine's operation, is positioned over one of these cells, and a "state" selected from a finite set of states. At each step of its operation, the head reads the symbol in its cell. Then, based on the symbol and the machine's own present state, the machine writes a symbol into the same cell, and moves the head one step to the left or the right,[6] or halts the computation. The choice of which replacement symbol to write, which direction to move the head, and whether to halt is based on a finite table that specifies what to do for each combination of the current state and the symbol that is read. 
+As with a real computer program, it is possible for a Turing machine to go into an infinite loop which will never halt.
+The Turing machine was invented in 1936 by Alan Turing,[7][8] who called it an "a-machine" (automatic machine).[9] It was Turing's doctoral advisor, Alonzo Church, who later coined the term "Turing machine" in a review.[10]  With this model, Turing was able to answer two questions in the negative:
+Thus by providing a mathematical description of a very simple device capable of arbitrary computations, he was able to prove properties of computation in general—and in particular, the uncomputability of the Entscheidungsproblem, or 'decision problem' (whether every mathematical statement is provable or disprovable).[13]
+Turing machines proved the existence of fundamental limitations on the power of mechanical computation.[14]
+While they can express arbitrary computations, their minimalist design makes them too slow for computation in practice: real-world computers are based on different designs that, unlike Turing machines, use random-access memory.
+Turing completeness is the ability for a model of computation or a system of instructions to simulate a Turing machine. A programming language that is Turing complete is theoretically capable of expressing all tasks accomplishable by computers; nearly all programming languages are Turing complete if the limitations of finite memory are ignored.
+A Turing machine is an idealised model of a central processing unit (CPU) that controls all data manipulation done by a computer, with the canonical machine using sequential memory to store data. Typically, the sequential memory is represented as a tape of infinite length on which the machine can perform read and write operations.
+In the context of formal language theory, a Turing machine (automaton) is capable of enumerating some arbitrary subset of valid strings of an alphabet. A set of strings which can be enumerated in this manner is called a recursively enumerable language. The Turing machine can equivalently be defined as a model that recognises valid input strings, rather than enumerating output strings.
+Given a Turing machine M and an arbitrary string s, it is generally not possible to decide whether M will eventually produce s. This is due to the fact that the halting problem is unsolvable, which has major implications for the theoretical limits of computing.
+A Turing machine that is able to simulate any other Turing machine is called a universal Turing machine (UTM, or simply a universal machine). Another mathematical formalism, lambda calculus, with a similar "universal" nature was introduced by Alonzo Church. Church's work intertwined with Turing's to form the basis for the Church–Turing thesis. This thesis states that Turing machines, lambda calculus, and other similar formalisms of computation do indeed capture the informal notion of effective methods in logic and mathematics and thus provide a model through which one can reason about an algorithm or "mechanical procedure" in a mathematically precise way without being tied to any particular formalism. Studying the  abstract properties of Turing machines has yielded many insights into computer science, computability theory, and complexity theory.
+In his 1948 essay, "Intelligent Machinery", Turing wrote that his machine consists of:
+...an unlimited memory capacity obtained in the form of an infinite tape marked out into squares, on each of which a symbol could be printed. At any moment there is one symbol in the machine; it is called the scanned symbol. The machine can alter the scanned symbol, and its behavior is in part determined by that symbol, but the symbols on the tape elsewhere do not affect the behavior of the machine. However, the tape can be moved back and forth through the machine, this being one of the elementary operations of the machine. Any symbol on the tape may therefore eventually have an innings.[15]
+— Turing 1948, p. 3[16]
+The Turing machine mathematically models a machine that mechanically operates on a tape.  On this tape are symbols, which the machine can read and write, one at a time, using a tape head. Operation is fully determined by a finite set of elementary instructions such as "in state 42, if the symbol seen is 0, write a 1; if the symbol seen is 1, change into state 17; in state 17, if the symbol seen is 0, write a 1 and change to state 6;" etc. In the original article ("On Computable Numbers, with an Application to the Entscheidungsproblem", see also references below), Turing imagines not a mechanism, but a person whom he calls the "computer", who executes these deterministic mechanical rules slavishly (or as Turing puts it, "in a desultory manner").
+More explicitly, a Turing machine consists of:
+In the 4-tuple models, erasing or writing a symbol (aj1) and moving the head left or right (dk) are specified as separate instructions. The table tells the machine to (ia) erase or write a symbol or (ib) move the head left or right, and then (ii) assume the same or a new state as prescribed, but not both actions (ia) and (ib) in the same instruction. In some models, if there is no entry in the table for the current combination of symbol and state, then the machine will halt; other models require all entries to be filled.
+Every part of the machine (i.e. its state, symbol-collections, and used tape at any given time) and its actions (such as printing, erasing and tape motion) is finite, discrete and distinguishable; it is the unlimited amount of tape and runtime that gives it an unbounded amount of storage space.
+Following Hopcroft & Ullman (1979, p. 148), a (one-tape) Turing machine can be formally defined as a 7-tuple 
+
+
+
+M
+=
+⟨
+Q
+,
+Γ
+,
+b
+,
+Σ
+,
+δ
+,
+
+q
+
+0
+
+
+,
+F
+⟩
+
+
+{\displaystyle M=\langle Q,\Gamma ,b,\Sigma ,\delta ,q_{0},F\rangle }
+
+ where
+A variant allows "no shift", say N, as a third element of the set of directions 
+
+
+
+{
+L
+,
+R
+}
+
+
+{\displaystyle \{L,R\}}
+
+.
+The 7-tuple for the 3-state busy beaver looks like this (see more about this busy beaver at Turing machine examples):
+Initially all tape cells are marked with 
+
+
+
+0
+
+
+{\displaystyle 0}
+
+.
+In the words of van Emde Boas (1990), p. 6: "The set-theoretical object [his formal seven-tuple description similar to the above] provides only partial information on how the machine will behave and what its computations will look like."
+For instance,
+Definitions in literature sometimes differ slightly, to make arguments or proofs easier or clearer, but this is always done in such a way that the resulting machine has the same computational power. For example, the set could be changed from 
+
+
+
+{
+L
+,
+R
+}
+
+
+{\displaystyle \{L,R\}}
+
+ to 
+
+
+
+{
+L
+,
+R
+,
+N
+}
+
+
+{\displaystyle \{L,R,N\}}
+
+, where N ("None" or "No-operation") would allow the machine to stay on the same tape cell instead of moving left or right. This would not increase the machine's computational power.
+The most common convention represents each "Turing instruction" in a "Turing table" by one of nine 5-tuples, per the convention of Turing/Davis (Turing (1936) in The Undecidable, p. 126–127 and Davis (2000) p. 152):
+Other authors (Minsky (1967) p. 119, Hopcroft and Ullman (1979) p. 158, Stone (1972) p. 9) adopt a different convention, with new state qm listed immediately after the scanned symbol Sj:
+For the remainder of this article "definition 1" (the Turing/Davis convention) will be used.
+In the following table, Turing's original model allowed only the first three lines that he called N1, N2, N3 (cf. Turing in The Undecidable, p. 126). He allowed for erasure of the "scanned square" by naming a 0th symbol S0 = "erase" or "blank", etc. However, he did not allow for non-printing, so every instruction-line includes "print symbol Sk" or "erase" (cf. footnote 12 in Post (1947), The Undecidable, p. 300). The abbreviations are Turing's (The Undecidable, p. 119). Subsequent to Turing's original paper in 1936–1937, machine-models have allowed all nine possible types of five-tuples:
+Any Turing table (list of instructions) can be constructed from the above nine 5-tuples. For technical reasons, the three non-printing or "N" instructions (4, 5, 6) can usually be dispensed with. For examples see Turing machine examples.
+Less frequently the use of 4-tuples are encountered: these represent a further atomization of the Turing instructions (cf. Post (1947), Boolos & Jeffrey (1974, 1999), Davis-Sigal-Weyuker (1994)); also see more at Post–Turing machine.
+The word "state" used in context of Turing machines can be a source of confusion, as it can mean two things. Most commentators after Turing have used "state" to mean the name/designator of the current instruction to be performed—i.e. the contents of the state register. But Turing (1936) made a strong distinction between a record of what he called the machine's "m-configuration", and the machine's (or person's) "state of progress" through the computation—the current state of the total system. What Turing called "the state formula" includes both the current instruction and all the symbols on the tape:
+Thus the state of progress of the computation at any stage is completely determined by the note of instructions and the symbols on the tape. That is, the state of the system may be described by a single expression (sequence of symbols) consisting of the symbols on the tape followed by Δ (which is supposed to not to appear elsewhere) and then by the note of instructions. This expression is called the "state formula".
+— The Undecidable, pp. 139–140, emphasis added
+Earlier in his paper Turing carried this even further: he gives an example where he placed a symbol of the current "m-configuration"—the instruction's label—beneath the scanned square, together with all the symbols on the tape (The Undecidable, p. 121); this he calls "the complete configuration" (The Undecidable, p. 118). To print the "complete configuration" on one line, he places the state-label/m-configuration to the left of the scanned symbol.
+A variant of this is seen in Kleene (1952) where Kleene shows how to write the Gödel number of a machine's "situation": he places the "m-configuration" symbol q4 over the scanned square in roughly the center of the 6 non-blank squares on the tape (see the Turing-tape figure in this article) and puts it to the right of the scanned square. But Kleene refers to "q4" itself as "the machine state" (Kleene, p. 374–375). Hopcroft and Ullman call this composite the "instantaneous description" and follow the Turing convention of putting the "current state" (instruction-label, m-configuration) to the left of the scanned symbol (p. 149), that is, the instantaneous description is the composite of non-blank symbols to the left, state of the machine, the current symbol scanned by the head, and the non-blank symbols to the right.
+Example: total state of 3-state 2-symbol busy beaver after 3 "moves" (taken from example "run" in the figure below):
+This means: after three moves the tape has ... 000110000 ... on it, the head is scanning the right-most 1, and the state is A. Blanks (in this case represented by "0"s) can be part of the total state as shown here: B01; the tape has a single 1 on it, but the head is scanning the 0 ("blank") to its left and the state is B.
+"State" in the context of Turing machines should be clarified as to which is being described:  the current instruction, or the list of symbols on the tape together with the current instruction, or  the list of symbols on the tape together with the current instruction placed to the left of the scanned symbol or to the right of the scanned symbol.
+Turing's biographer Andrew Hodges (1983: 107) has noted and discussed this confusion.
+To the right: the above table as expressed as a "state transition" diagram.
+Usually large tables are better left as tables (Booth, p. 74). They are more readily simulated by computer in tabular form (Booth, p. 74). However, certain concepts—e.g. machines with "reset" states and machines with repeating patterns (cf. Hill and Peterson p. 244ff)—can be more readily seen when viewed as a drawing.
+Whether a drawing represents an improvement on its table must be decided by the reader for the particular context.
+The reader should again be cautioned that such diagrams represent a snapshot of their table frozen in time, not the course ("trajectory") of a computation through time and space. While every time the busy beaver machine "runs" it will always follow the same state-trajectory, this is not true for the "copy" machine that can be provided with variable input "parameters".
+The diagram "progress of the computation" shows the three-state busy beaver's "state" (instruction) progress through its computation from start to finish. On the far right is the Turing "complete configuration" (Kleene "situation", Hopcroft–Ullman "instantaneous description") at each step. If the machine were to be stopped and cleared to blank both the "state register" and entire tape, these "configurations" could be used to rekindle a computation anywhere in its progress (cf. Turing (1936) The Undecidable, pp. 139–140).
+Many machines that might be thought to have more computational capability than a simple universal Turing machine can be shown to have no more power (Hopcroft and Ullman p. 159, cf. Minsky (1967)). They might compute faster, perhaps, or use less memory, or their instruction set might be smaller, but they cannot compute more powerfully (i.e. more mathematical functions). (The Church–Turing thesis hypothesises this to be true for any kind of machine: that anything that can be "computed" can be computed by some Turing machine.)
+A Turing machine is equivalent to a single-stack pushdown automaton (PDA) that has been made more flexible and concise by relaxing the last-in-first-out (LIFO) requirement of its stack. In addition, a Turing machine is also equivalent to a two-stack PDA with standard LIFO  semantics, by using one stack to model the tape left of the head and the other stack for the tape to the right.
+At the other extreme, some very simple models turn out to be Turing-equivalent, i.e. to have the same computational power as the Turing machine model.
+Common equivalent models are the multi-tape Turing machine, multi-track Turing machine, machines with input and output, and the non-deterministic Turing machine (NDTM) as opposed to the deterministic Turing machine (DTM) for which the action table has at most one entry for each combination of symbol and state.
+Read-only, right-moving Turing machines are equivalent to DFAs (as well as NFAs by conversion using the NFA to DFA conversion algorithm).
+For practical and didactic intentions, the equivalent register machine can be used as a usual assembly programming language.
+A relevant question is whether or not the computation model represented by concrete programming languages is Turing equivalent. While the computation of a real computer is based on finite states and thus not capable to simulate a Turing machine, programming languages themselves do not necessarily have this limitation. Kirner et al., 2009 have shown that among the general-purpose programming languages some are Turing complete while others are not. For example, ANSI C is not Turing complete, as all instantiations of ANSI C (different instantiations are possible as the standard deliberately leaves certain behaviour undefined for legacy reasons) imply a finite-space memory. This is because the size of memory reference data types, called pointers, is accessible inside the language. However, other programming languages like Pascal do not have this feature, which allows them to be Turing complete in principle.
+It is just Turing complete in principle, as memory allocation in a programming language is allowed to fail, which means the programming language can be Turing complete when ignoring failed memory allocations, but the compiled programs executable on a real computer cannot.
+Early in his paper (1936) Turing makes a distinction between an "automatic machine"—its "motion ... completely determined by the configuration" and a "choice machine":
+...whose motion is only partially determined by the configuration ... When such a machine reaches one of these ambiguous configurations, it cannot go on until some arbitrary choice has been made by an external operator. This would be the case if we were using machines to deal with axiomatic systems.
+— The Undecidable, p. 118
+Turing (1936) does not elaborate further except in a footnote in which he describes how to use an a-machine to "find all the provable formulae of the [Hilbert] calculus" rather than use a choice machine. He "suppose[s] that the choices are always between two possibilities 0 and 1. Each proof will then be determined by a sequence of choices i1, i2, ..., in (i1 = 0 or 1, i2 = 0 or 1, ..., in = 0 or 1), and hence the number 2n + i12n-1 + i22n-2 + ... +in completely determines the proof. The automatic machine carries out successively proof 1, proof 2, proof 3, ..." (Footnote ‡, The Undecidable, p. 138)
+This is indeed the technique by which a deterministic (i.e., a-) Turing machine can be used to mimic the action of a nondeterministic Turing machine; Turing solved the matter in a footnote and appears to dismiss it from further consideration.
+An oracle machine or o-machine is a Turing a-machine that pauses its computation at state "o" while, to complete its calculation, it "awaits the decision" of "the oracle"—an entity unspecified by Turing "apart from saying that it cannot be a machine" (Turing (1939), The Undecidable, p. 166–168).
+As Turing wrote in The Undecidable, p. 128 (italics added):
+It is possible to invent a single machine which can be used to compute any computable sequence. If this machine U is supplied with the tape on the beginning of which is written the string of quintuples separated by semicolons of some computing machine M, then U will compute the same sequence as M.
+This finding is now taken for granted, but at the time (1936) it was considered astonishing.[citation needed] The model of computation that Turing called his "universal machine"—"U" for short—is considered by some (cf. Davis (2000)) to have been the fundamental theoretical breakthrough that led to the notion of the stored-program computer.
+Turing's paper ... contains, in essence, the invention of the modern computer and some of the programming techniques that accompanied it.
+— Minsky (1967), p. 104
+In terms of computational complexity, a multi-tape universal Turing machine need only be slower by logarithmic factor compared to the machines it simulates. This result was obtained in 1966 by F. C. Hennie and R. E. Stearns. (Arora and Barak, 2009, theorem 1.9)
+Turing machines are more powerful than some other kinds of automata, such as finite-state machines and pushdown automata. According to the Church–Turing thesis, they are as powerful as real machines, and are able to execute any operation that a real program can. What is neglected in this statement is that, because a real machine can only have a finite number of configurations, it is nothing but a finite-state machine, whereas a Turing machine has an unlimited amount of storage space available for its computations.
+There are a number of ways to explain why Turing machines are useful models of real computers:
+A limitation of Turing machines is that they do not model the strengths of a particular arrangement well. For instance, modern stored-program computers are actually instances of a more specific form of abstract machine known as the random-access stored-program machine or RASP machine model. Like the universal Turing machine, the RASP stores its "program" in "memory" external to its finite-state machine's "instructions". Unlike the universal Turing machine, the RASP has an infinite number of distinguishable, numbered but unbounded "registers"—memory "cells" that can contain any integer (cf. Elgot and Robinson (1964), Hartmanis (1971), and in particular Cook-Rechow (1973); references at random-access machine). The RASP's finite-state machine is equipped with the capability for indirect addressing (e.g., the contents of one register can be used as an address to specify another register); thus the RASP's "program" can address any register in the register-sequence. The upshot of this distinction is that there are computational optimizations that can be performed based on the memory indices, which are not possible in a general Turing machine; thus when Turing machines are used as the basis for bounding running times, a "false lower bound" can be proven on certain algorithms' running times (due to the false simplifying assumption of a Turing machine). An example of this is binary search, an algorithm that can be shown to perform more quickly when using the RASP model of computation rather than the Turing machine model.
+In the early days of computing, computer use was typically limited to batch processing, i.e., non-interactive tasks, each producing output data from given input data. Computability theory, which studies computability of functions from inputs to outputs, and for which Turing machines were invented, reflects this practice.
+Since the 1970s, interactive use of computers became much more common.  In principle, it is possible to model this by having an external agent read from the tape and write to it at the same time as a Turing machine, but this rarely matches how interaction actually happens; therefore, when describing interactivity, alternatives such as I/O automata are usually preferred.
+The arithmetic model of computation differs from the Turing model in two aspects:[20]: 32
+Some algorithms run in polynomial time in one model but not in the other one. For example:
+However, if an algorithm runs in polynomial time in the arithmetic model, and in addition, the binary length of all involved numbers is polynomial in the length of the input, then it is always polynomial-time in the Turing model. Such an algorithm is said to run in strongly polynomial time.
+Robin Gandy (1919–1995)—a student of Alan Turing (1912–1954), and his lifelong friend—traces the lineage of the notion of "calculating machine" back to Charles Babbage (circa 1834) and actually proposes "Babbage's Thesis":
+That the whole of development and operations of analysis are now capable of being executed by machinery.
+— (italics in Babbage as cited by Gandy, p. 54)
+Gandy's analysis of Babbage's analytical engine describes the following five operations (cf. p. 52–53):
+Gandy states that "the functions which can be calculated by (1), (2), and (4) are precisely those which are Turing computable." (p. 53). He cites other proposals for "universal calculating machines" including those of Percy Ludgate (1909), Leonardo Torres Quevedo (1914),[21][22] Maurice d'Ocagne (1922), Louis Couffignal (1933), Vannevar Bush (1936), Howard Aiken (1937). However:
+… the emphasis is on programming a fixed iterable sequence of arithmetical operations. The fundamental importance of conditional iteration and conditional transfer for a general theory of calculating machines is not recognized…
+— Gandy p. 55
+With regard to Hilbert's problems posed by the famous mathematician David Hilbert in 1900, an aspect of problem #10 had been floating about for almost 30 years before it was framed precisely. Hilbert's original expression for No. 10 is as follows:
+10. Determination of the solvability of a Diophantine equation. Given a Diophantine equation with any number of unknown quantities and with rational integral coefficients: To devise a process according to which it can be determined in a finite number of operations whether the equation is solvable in rational integers.
+The Entscheidungsproblem [decision problem for first-order logic] is solved when we know a procedure that allows for any given logical expression to decide by finitely many operations its validity or satisfiability ... The Entscheidungsproblem must be considered the main problem of mathematical logic.
+— quoted, with this translation and the original German, in Dershowitz and Gurevich, 2008
+By 1922, this notion of "Entscheidungsproblem" had developed a bit, and H. Behmann stated that
+... most general form of the Entscheidungsproblem [is] as follows:
+A quite definite generally applicable prescription is required which will allow one to decide in a finite number of steps the truth or falsity of a given purely logical assertion ...
+— Gandy p. 57, quoting Behmann
+Behmann remarks that ... the general problem is equivalent to the problem of deciding which mathematical propositions are true.
+— ibid.
+If one were able to solve the Entscheidungsproblem then one would have a "procedure for solving many (or even all) mathematical problems".
+— ibid., p. 92
+By the 1928 international congress of mathematicians, Hilbert "made his questions quite precise. First, was mathematics complete ... Second, was mathematics consistent ... And thirdly, was mathematics decidable?" (Hodges p. 91, Hawking p. 1121). The first two questions were answered in 1930 by Kurt Gödel at the very same meeting where Hilbert delivered his retirement speech (much to the chagrin of Hilbert); the third—the Entscheidungsproblem—had to wait until the mid-1930s.
+The problem was that an answer first required a precise definition of "definite general applicable prescription", which Princeton professor Alonzo Church would come to call "effective calculability", and in 1928 no such definition existed. But over the next 6–7 years Emil Post developed his definition of a worker moving from room to room writing and erasing marks per a list of instructions (Post 1936), as did Church and his two students Stephen Kleene and J. B. Rosser by use of Church's lambda-calculus and Gödel's recursion theory (1934). Church's paper (published 15 April 1936) showed that the Entscheidungsproblem was indeed "undecidable"[23] and beat Turing to the punch by almost a year (Turing's paper submitted 28 May 1936, published January 1937). In the meantime, Emil Post submitted a brief paper in the fall of 1936, so Turing at least had priority over Post. While Church refereed Turing's paper, Turing had time to study Church's paper and add an Appendix where he sketched a proof that Church's lambda-calculus and his machines would compute the same functions.
+But what Church had done was something rather different, and in a certain sense weaker. ... the Turing construction was more direct, and provided an argument from first principles, closing the gap in Church's demonstration.
+— Hodges p. 112
+And Post had only proposed a definition of calculability and criticised Church's "definition", but had proved nothing.
+In the spring of 1935, Turing as a young Master's student at King's College, Cambridge, took on the challenge; he had been stimulated by the lectures of the logician M. H. A. Newman "and learned from them of Gödel's work and the Entscheidungsproblem ... Newman used the word 'mechanical' ... In his obituary of Turing 1955 Newman writes:
+To the question 'what is a "mechanical" process?' Turing returned the characteristic answer 'Something that can be done by a machine' and he embarked on the highly congenial task of analysing the general notion of a computing machine.
+— Gandy, p. 74
+Gandy states that:
+I suppose, but do not know, that Turing, right from the start of his work, had as his goal a proof of the undecidability of the Entscheidungsproblem. He told me that the 'main idea' of the paper came to him when he was lying in Grantchester meadows in the summer of 1935. The 'main idea' might have either been his analysis of computation or his realization that there was a universal machine, and so a diagonal argument to prove unsolvability.
+— ibid., p. 76
+While Gandy believed that Newman's statement above is "misleading", this opinion is not shared by all. Turing had a lifelong interest in machines: "Alan had dreamt of inventing typewriters as a boy; [his mother] Mrs. Turing had a typewriter; and he could well have begun by asking himself what was meant by calling a typewriter 'mechanical'" (Hodges p. 96). While at Princeton pursuing his PhD, Turing built a Boolean-logic multiplier (see below). His PhD thesis, titled "Systems of Logic Based on Ordinals", contains the following definition of "a computable function":
+It was stated above that 'a function is effectively calculable if its values can be found by some purely mechanical process'. We may take this statement literally, understanding by a purely mechanical process one which could be carried out by a machine. It is possible to give a mathematical description, in a certain normal form, of the structures of these machines. The development of these ideas leads to the author's definition of a computable function, and to an identification of computability with effective calculability. It is not difficult, though somewhat laborious, to prove that these three definitions [the 3rd is the λ-calculus] are equivalent.
+— Turing (1939) in The Undecidable, p. 160
+Alan Turing invented the "a-machine" (automatic machine) in 1936.[7] Turing submitted his paper on 31 May 1936 to the London Mathematical Society for its Proceedings (cf. Hodges 1983:112), but it was published in early 1937 and offprints were available in February 1937 (cf. Hodges 1983:129) It was Turing's doctoral advisor, Alonzo Church, who later coined the term "Turing machine" in a review.[10]  With this model, Turing was able to answer two questions in the negative:
+Thus by providing a mathematical description of a very simple device capable of arbitrary computations, he was able to prove properties of computation in general—and in particular, the uncomputability of the Entscheidungsproblem ('decision problem').[13]
+When Turing returned to the UK he ultimately became jointly responsible for breaking the German secret codes created by encryption machines called "The Enigma"; he also became involved in the design of the ACE (Automatic Computing Engine), "[Turing's] ACE proposal was effectively self-contained, and its roots lay not in the EDVAC [the USA's initiative], but in his own universal machine" (Hodges p. 318). Arguments still continue concerning the origin and nature of what has been named by Kleene (1952) Turing's Thesis. But what Turing did prove with his computational-machine model appears in his paper "On Computable Numbers, with an Application to the Entscheidungsproblem" (1937):
+[that] the Hilbert Entscheidungsproblem can have no solution ... I propose, therefore to show that there can be no general process for determining whether a given formula U of the functional calculus K is provable, i.e. that there can be no machine which, supplied with any one U of these formulae, will eventually say whether U is provable.
+— from Turing's paper as reprinted in The Undecidable, p. 145
+Turing's example (his second proof): If one is to ask for a general procedure to tell us: "Does this machine ever print 0", the question is "undecidable".
+In 1937, while at Princeton working on his PhD thesis, Turing built a digital (Boolean-logic) multiplier from scratch, making his own electromechanical relays (Hodges p. 138). "Alan's task was to embody the logical design of a Turing machine in a network of relay-operated switches ..." (Hodges p. 138). While Turing might have been just initially curious and experimenting, quite-earnest work in the same direction was going in Germany (Konrad Zuse (1938)), and in the United States (Howard Aiken) and George Stibitz (1937); the fruits of their labors were used by both the Axis and Allied militaries in World War II (cf. Hodges p. 298–299). In the early to mid-1950s Hao Wang and Marvin Minsky reduced the Turing machine to a simpler form (a precursor to the Post–Turing machine of Martin Davis); simultaneously European researchers were reducing the new-fangled electronic computer to a computer-like theoretical object equivalent to what is now being called a "Turing machine". In the late 1950s and early 1960s, the coincidentally parallel developments of Melzak and Lambek (1961), Minsky (1961), and Shepherdson and Sturgis (1961) carried the European work further and reduced the Turing machine to a more friendly, computer-like abstract model called the counter machine; Elgot and Robinson (1964), Hartmanis (1971), Cook and Reckhow (1973) carried this work even further with the register machine and random-access machine models—but basically all are just multi-tape Turing machines with an arithmetic-like instruction set.
+Today, the counter, register and random-access machines and their sire the Turing machine continue to be the models of choice for theorists investigating questions in the theory of computation. In particular, computational complexity theory makes use of the Turing machine:
+Depending on the objects one likes to manipulate in the computations (numbers like nonnegative integers or alphanumeric strings), two models have obtained a dominant position in machine-based complexity theory:
+the off-line multitape Turing machine..., which represents the standard model for string-oriented computation, and
+the random access machine (RAM) as introduced by Cook and Reckhow ..., which models the idealised Von Neumann-style computer.
+— van Emde Boas 1990:4
+Only in the related area of analysis of algorithms this role is taken over by the RAM model.
+— van Emde Boas 1990:16
+
+
+Turing Machines (TM) play a crucial role in the Theory of Computation (TOC). They are abstract computational devices used to explore the limits of what can be computed. Turing Machines help prove that certain languages and problems have no algorithmic solution. Their simplicity makes them an effective tool for studying computational theory, yet they are as powerful as modern computers. Turing Machine was invented by Alan Turing in 1936 and it is used to accept Recursive Enumerable Languages (generated by Type-0 Grammar).
+A Turing Machine consists of an infinite tape, a read/write head, and a set of rules that determine how it reads, writes, and moves on the tape. Despite its simplicity, a TM can simulate any real-world computation, making it as powerful as modern computers but with infinite memory.
+The Turing machine's behavior is determined by a finite state machine, which consists of a finite set of states, a transition function that defines the actions to be taken based on the current state and the symbol being read, and a set of start and accept states.
+The TM begins in the start state and performs the actions specified by the transition function until it reaches an accept or reject state. If it reaches an accept state, the computation is considered successful; if it reaches a reject state, the computation is considered unsuccessful.
+In the context of automata theory and the theory of computation, Turing machines are used to study the properties of algorithms and to determine what problems can and cannot be solved by computers. They provide a way to model the behavior of algorithms and to analyze their computational complexity, which is the amount of time and memory they require to solve a problem.
+Turing machines are an important tool for studying the limits of computation and for understanding the foundations of computer science. They provide a simple yet powerful model of computation that has been widely used in research and has had a profound impact on our understanding of algorithms and computation.
+While one might consider using programming languages like C to study computation, Turing Machines are preferred because:
+They are simpler to analyze.
+They provide a clear, mathematical model of computation.
+They possess infinite memory, making them even more powerful than real-world computers.
+A Turing Machine consists of a tape of infinite length on which read and writes operation can be performed. The tape consists of infinite cells on which each cell either contains input symbol or a special symbol called blank. It also consists of a head pointer which points to cell currently being read and it can move in both directions.
+A Turing Machine is defined by:
+A finite set of states (Q).
+An input alphabet (Σ).
+A tape alphabet (Γ) that includes Σ.
+A transition function (δ).
+A start state (q0).
+A blank symbol (B).
+A set of final states (F).
+We construct a Turing Machine (TM) for the language L = {0ⁿ1ⁿ | n ≥ 1}, which accepts strings of equal 0s followed by equal 1s.
+Components:
+Q = {q₀, q₁, q₂, q₃} (q₀ is the initial state)
+T = {0,1,X,Y,B} (B represents blank, X and Y mark processed symbols)
+Σ = {0,1} (input symbols)
+F = {q₃} (final state)
+Transition Table:
+Illustration
+Let us see how this turing machine works for 0011. Initially head points to 0 which is underlined and state is q0 as:
+The move will be δ(q0, 0) = (q1, X, R). It means, it will go to state q1, replace 0 by X and head will move to right as:
+The move will be δ(q1, 0) = (q1, 0, R) which means it will remain in same state and without changing any symbol, it will move to right as:
+The move will be δ(q1, 1) = (q2, Y, L) which means it will move to q2 state and changing 1 to Y, it will move to left as:
+Working on it in the same way, the machine will reach state q3 and head will point to B as shown:
+Using move δ(q3, B) = halt, it will stop and accepted. Note:
+In non-deterministic turing machine, there can be more than one possible move for a given state and tape symbol, but non-deterministic TM does not add any power.
+Every non-deterministic TM can be converted into deterministic TM.
+In multi-tape turing machine, there can be more than one tape and corresponding head pointers, but it does not add any power to turing machine.
+Every multi-tape TM can be converted into single tape TM.
+Question: A single tape Turing Machine M has two states q0 and q1, of which q0 is the starting state. The tape alphabet of M is {0, 1, B} and its input alphabet is {0, 1}. The symbol B is the blank symbol used to indicate end of an input string. The transition function of M is described in the following table.
+The table is interpreted as illustrated below. The entry (q1, 1, R) in row q0 and column 1 signifies that if M is in state q0 and reads 1 on the current tape square, then it writes 1 on the same tape square, moves its tape head one position to the right and transitions to state q1. Which of the following statements is true about M?
+M does not halt on any string in (0 + 1)+
+M does not halt on any string in (00 + 1)*
+M halts on all string ending in a 0
+M halts on all string ending in a 1
+Solution:  Let us see whether machine halts on string ‘1’. Initially state will be q0, head will point to 1 as:
+Using δ(q0, 1) = (q1, 1, R), it will move to state q1 and head will move to right as:
+Using δ(q1, B) = (q0, B, L), it will move to state q0 and head will move to left as:
+It will run in the same way again and again and not halt. Option D says M halts on all string ending with 1, but it is not halting for 1. So, option D is incorrect. Let us see whether machine halts on string ‘0’. Initially state will be q0, head will point to 1 as:
+Using δ(q0, 0) = (q1, 1, R), it will move to state q1 and head will move to right as:
+Using δ(q1,B)=(q0,B,L), it will move to state q0 and head will move to left as:
+It will run in the same way again and again and not halt. Option C says M halts on all string ending with 0, but it is not halting for 0. So, option C is incorrect. Option B says that TM does not halt for any string (00 + 1)*. But NULL string is a part of (00 + 1)* and TM will halt for NULL string. For NULL string, tape will be,
+Using δ(q0, B) = halt, TM will halt. As TM is halting for NULL, this option is also incorrect. So, option (A) is correct.
+K
+K
+Theory of Computation
+
+
+In computer science, an array is a data structure consisting of a collection of elements (values or variables), of same memory size, each identified by at least one array index or key, a collection of which may be a tuple, known as an index tuple. In general, an array is a mutable and linear collection of elements with the same data type. An array is stored such that the position (memory address) of each element can be computed from its index tuple by a mathematical formula.[1][2][3] The simplest type of data structure is a linear array, also called a one-dimensional array.
+For example, an array of ten 32-bit (4-byte) integer variables, with indices 0 through 9, may be stored as ten words at memory addresses 2000, 2004, 2008, ..., 2036, (in hexadecimal: 0x7D0, 0x7D4, 0x7D8, ..., 0x7F4) so that the element with index i has the address 2000 + (i × 4).[4]
+The memory address of the first element of an array is called first address, foundation address, or base address.
+Because the mathematical concept of a matrix can be represented as a two-dimensional grid, two-dimensional arrays are also sometimes called "matrices". In some cases the term "vector" is used in computing to refer to an array, although tuples rather than vectors are the more mathematically correct equivalent. Tables are often implemented in the form of arrays, especially lookup tables; the word "table" is sometimes used as a synonym of array.
+Arrays are among the oldest and most important data structures, and are used by almost every program. They are also used to implement many other data structures, such as lists and strings. They effectively exploit the addressing logic of computers. In most modern computers and many external storage devices, the memory is a one-dimensional array of words, whose indices are their addresses. Processors, especially vector processors, are often optimized for array operations.
+Arrays are useful mostly because the element indices can be computed at run time. Among other things, this feature allows a single iterative statement to process arbitrarily many elements of an array. For that reason, the elements of an array data structure are required to have the same size and should use the same data representation. The set of valid index tuples and the addresses of the elements (and hence the element addressing formula) are usually,[3][5] but not always,[2] fixed while the array is in use.
+The term "array" may also refer to an array data type, a kind of data type provided by most high-level programming languages that consists of a collection of values or variables that can be selected by one or more indices computed at run-time. Array types are often implemented by array structures; however, in some languages they may be implemented by hash tables, linked lists, search trees, or other data structures.
+The term is also used, especially in the description of algorithms, to mean associative array or "abstract array", a theoretical computer science model (an abstract data type or ADT) intended to capture the essential properties of arrays.
+The first digital computers used machine-language programming to set up and access array structures for data tables, vector and matrix computations, and for many other purposes. John von Neumann wrote the first array-sorting program (merge sort) in 1945, during the building of the first stored-program computer.[6] Array indexing was originally done by self-modifying code, and later using index registers and indirect addressing. Some mainframes designed in the 1960s, such as the Burroughs B5000 and its successors, used memory segmentation to perform index-bounds checking in hardware.[7]
+Assembly languages generally have no special support for arrays, other than what the machine itself provides. The earliest high-level programming languages, including FORTRAN (1957), Lisp (1958), COBOL (1960), and ALGOL 60 (1960), had support for multi-dimensional arrays, and so has C (1972). In C++ (1983), class templates exist for multi-dimensional arrays whose dimension is fixed at runtime[3][5] as well as for runtime-flexible arrays.[2]
+Arrays are used to implement mathematical vectors and matrices, as well as other kinds of rectangular tables. Many databases, small and large, consist of (or include) one-dimensional arrays whose elements are records.
+Arrays are used to implement other data structures, such as lists, heaps, hash tables, deques, queues, stacks, strings, and VLists. Array-based implementations of other data structures are frequently simple and space-efficient (implicit data structures), requiring little space overhead, but may have poor space complexity, particularly when modified, compared to tree-based data structures (compare a sorted array to a search tree).
+One or more large arrays are sometimes used to emulate in-program dynamic memory allocation, particularly memory pool allocation. Historically, this has sometimes been the only way to allocate "dynamic memory" portably.
+Arrays can be used to determine partial or complete control flow in programs, as a compact alternative to (otherwise repetitive) multiple IF statements. In this context, they are known as control tables and are used in conjunction with a purpose-built interpreter whose control flow is altered according to values contained in the array. The array may contain subroutine pointers (or relative subroutine numbers that can be acted upon by SWITCH statements) that direct the path of the execution of the program.
+When data objects are stored in an array, individual objects are selected by an index that is usually a non-negative scalar integer. Indexes are also called subscripts. An index maps the array value to a stored object.
+There are three ways in which the elements of an array can be indexed:
+Using zero based indexing is the design choice of many influential programming languages, including C, Java and Lisp. This leads to simpler implementation where the subscript refers to an offset from the starting position of an array, so the first element has an offset of zero.
+Arrays can have multiple dimensions, thus it is not uncommon to access an array using multiple indices. For example, a two-dimensional array A with three rows and four columns might provide access to the element at the 2nd row and 4th column by the expression A[1][3] in the case of a zero-based indexing system. Thus two indices are used for a two-dimensional array, three for a three-dimensional array, and n for an n-dimensional array.
+The number of indices needed to specify an element is called the dimension, dimensionality, or rank of the array.
+In standard arrays, each index is restricted to a certain range of consecutive integers (or consecutive values of some enumerated type), and the address of an element is computed by a "linear" formula on the indices.
+A one-dimensional array (or single dimension array) is a type of linear array. Accessing its elements involves a single subscript which can either represent a row or column index.
+As an example consider the C declaration int a[10]; which declares a one-dimensional array named a of ten integers. Here, the array can store ten elements of type int . This array has indices starting from zero through nine. For example, the expressions a[0] and a[9] are the first and last elements respectively.
+For a vector with linear addressing, the element with index i is located at the address B + c · i, where B is a fixed base address and c a fixed constant, sometimes called the address increment or stride.
+If the valid element indices begin at 0, the constant B is simply the address of the first element of the array. For this reason, the C programming language specifies that array indices always begin at 0; and many programmers will call that element "zeroth" rather than "first".
+However, one can choose the index of the first element by an appropriate choice of the base address B. For example, if the array has five elements, indexed 1 through 5, and the base address B is replaced by B + 30c, then the indices of those same elements will be 31 to 35. If the numbering does not start at 0, the constant B may not be the address of any element.
+For a multidimensional array, the element with indices i,j would have address B + c · i + d · j, where the coefficients c and d are the row and column address increments, respectively.
+More generally, in a k-dimensional array, the address of an element with indices i1, i2, ..., ik is
+For example: int a[2][3];
+This means that array a has 2 rows and 3 columns, and the array is of integer type. Here we can store 6 elements they will be stored linearly but starting from first row linear then continuing with second row. The above array will be stored as a11, a12, a13, a21, a22, a23.
+This formula requires only k multiplications and k additions, for any array that can fit in memory. Moreover, if any coefficient is a fixed power of 2, the multiplication can be replaced by bit shifting.
+The coefficients ck must be chosen so that every valid index tuple maps to the address of a distinct element.
+If the minimum legal value for every index is 0, then B is the address of the element whose indices are all zero. As in the one-dimensional case, the element indices may be changed by changing the base address B. Thus, if a two-dimensional array has rows and columns indexed from 1 to 10 and 1 to 20, respectively, then replacing B by B + c1 − 3c2 will cause them to be renumbered from 0 through 9 and 4 through 23, respectively. Taking advantage of this feature, some languages (like FORTRAN 77) specify that array indices begin at 1, as in mathematical tradition while other languages (like Fortran 90, Pascal and Algol) let the user choose the minimum value for each index.
+The addressing formula is completely defined by the dimension d, the base address B, and the increments c1, c2, ..., ck. It is often useful to pack these parameters into a record called the array's descriptor, stride vector, or dope vector.[2][3] The size of each element, and the minimum and maximum values allowed for each index may also be included in the dope vector. The dope vector is a complete handle for the array, and is a convenient way to pass arrays as arguments to procedures. Many useful array slicing operations (such as selecting a sub-array, swapping indices, or reversing the direction of the indices) can be performed very efficiently by manipulating the dope vector.[2]
+Often the coefficients are chosen so that the elements occupy a contiguous area of memory. However, that is not necessary. Even if arrays are always created with contiguous elements, some array slicing operations may create non-contiguous sub-arrays from them.
+There are two systematic compact layouts for a two-dimensional array. For example, consider the matrix
+In the row-major order layout (adopted by C for statically declared arrays), the elements in each row are stored in consecutive positions and all of the elements of a row have a lower address than any of the elements of a consecutive row:
+In column-major order (traditionally used by Fortran), the elements in each column are consecutive in memory and all of the elements of a column have a lower address than any of the elements of a consecutive column:
+For arrays with three or more indices, "row major order" puts in consecutive positions any two elements whose index tuples differ only by one in the last index. "Column major order" is analogous with respect to the first index.
+In systems which use processor cache or virtual memory, scanning an array is much faster if successive elements are stored in consecutive positions in memory, rather than sparsely scattered. This is known as spatial locality, which is a type of locality of reference. Many algorithms that use multidimensional arrays will scan them in a predictable order. A programmer (or a sophisticated compiler) may use this information to choose between row- or column-major layout for each array. For example, when computing the product A·B of two matrices, it would be best to have A stored in row-major order, and B in column-major order.
+Static arrays have a size that is fixed when they are created and consequently do not allow elements to be inserted or removed. However, by allocating a new array and copying the contents of the old array to it, it is possible to effectively implement a dynamic version of an array; see dynamic array. If this operation is done infrequently, insertions at the end of the array require only amortized constant time.
+Some array data structures do not reallocate storage, but do store a count of the number of elements of the array in use, called the count or size. This effectively makes the array a dynamic array with a fixed maximum size or capacity; Pascal strings are examples of this.
+More complicated (non-linear) formulas are occasionally used. For a compact two-dimensional triangular array, for instance, the addressing formula is a polynomial of degree 2.
+Both store and select take (deterministic worst case) constant time. Arrays take linear (O(n)) space in the number of elements n that they hold.
+In an array with element size k and on a machine with a cache line size of B bytes, iterating through an array of n elements requires the minimum of ceiling(nk/B) cache misses, because its elements occupy contiguous memory locations. This is roughly a factor of B/k better than the number of cache misses needed to access n elements at random memory locations. As a consequence, sequential iteration over an array is noticeably faster in practice than iteration over many other data structures, a property called locality of reference (this does not mean however, that using a perfect hash or trivial hash within the same (local) array, will not be even faster - and achievable in constant time). Libraries provide low-level optimized facilities for copying ranges of memory (such as memcpy) which can be used to move contiguous blocks of array elements significantly faster than can be achieved through individual element access. The speedup of such optimized routines varies by array element size, architecture, and implementation.
+Memory-wise, arrays are compact data structures with no per-element overhead. There may be a per-array overhead (e.g., to store index bounds) but this is language-dependent. It can also happen that elements stored in an array require less memory than the same elements stored in individual variables, because several array elements can be stored in a single word; such arrays are often called packed arrays. An extreme (but commonly used) case is the bit array, where every bit represents a single element. A single octet can thus hold up to 256 different combinations of up to 8 different conditions, in the most compact form.
+Array accesses with statically predictable access patterns are a major source of data parallelism.
+Dynamic arrays or growable arrays are similar to arrays but add the ability to insert and delete elements; adding and deleting at the end is particularly efficient. However, they reserve linear (Θ(n)) additional storage, whereas arrays do not reserve additional storage.
+Associative arrays provide a mechanism for array-like functionality without huge storage overheads when the index values are sparse. For example, an array that contains values only at indexes 1 and 2 billion may benefit from using such a structure. Specialized associative arrays with integer keys include Patricia tries, Judy arrays, and van Emde Boas trees.
+Balanced trees require O(log n) time for indexed access, but also permit inserting or deleting elements in O(log n) time,[11] whereas growable arrays require linear (Θ(n)) time to insert or delete elements at an arbitrary position.
+Linked lists allow constant time removal and insertion in the middle but take linear time for indexed access. Their memory use is typically worse than arrays, but is still linear.
+An Iliffe vector is an alternative to a multidimensional array structure. It uses a one-dimensional array of references to arrays of one dimension less. For two dimensions, in particular, this alternative structure would be a vector of pointers to vectors, one for each row(pointer on c or c++). Thus an element in row i and column j of an array A would be accessed by double indexing (A[i][j] in typical notation). This alternative structure allows jagged arrays, where each row may have a different size—or, in general, where the valid range of each index depends on the values of all preceding indices. It also saves one multiplication (by the column address increment) replacing it by a bit shift (to index the vector of row pointers) and one extra memory access (fetching the row address), which may be worthwhile in some architectures.
+The dimension of an array is the number of indices needed to select an element. Thus, if the array is seen as a function on a set of possible index combinations, it is the dimension of the space of which its domain is a discrete subset. Thus a one-dimensional array is a list of data, a two-dimensional array is a rectangle of data,[12] a three-dimensional array a block of data, etc.
+This should not be confused with the dimension of the set of all matrices with a given domain, that is, the number of elements in the array. For example, an array with 5 rows and 4 columns is two-dimensional, but such matrices form a 20-dimensional space. Similarly, a three-dimensional vector can be represented by a one-dimensional array of size three.
+
+
+Array is a linear data structure where all elements are arranged sequentially. It is a collection of elements of same data type stored at contiguous memory locations.
+For simplicity, we can think of an array as a flight of stairs where on each step is placed a value (let's say one of your friends). Here, you can identify the location of any of your friends by simply knowing the count of the step they are on.
+This makes it easier to calculate the position of each element by simply adding an offset to a base value, i.e., the memory location of the first element of the array (generally denoted by the name of the array). The base value is index 0 and the difference between the two indexes is the offset.
+Is the array always of a fixed size?
+Arrays at core are of fixed size only, but most of the languages provide dynamic sized arrays using the underlying fixed sized arrays. For example, vector in C++, ArrayList in Java and list in Python. In C language, the array has a fixed size meaning once the size is given to it, it cannot be changed i.e. you can’t shrink it nor can you expand it.
+Important Points to Note about Arrays
+Array is a fundamental data structure and used to implement other data structures like stack, queue, dequeue and heap.
+The main advantages of using array over other data structures are cache friendliness and random access memory.  Please refer Getting Started with Array Data Structure for more details.
+M
+M
+DSA
+
+
+In this article, we introduce array, implementation in different popular languages, its basic operations and commonly seen problems / interview questions.
+An array stores items (in case of C/C++ and Java Primitive Arrays) or their references (in case of Python, JS, Java Non-Primitive) at contiguous locations.
+It offers mainly the following advantages over other data structures.Random Access :  i-th item can be accessed in O(1) Time as we have the base address and every item or reference is of same size.Cache Friendliness : Since items / references are stored at contiguous locations, we get the advantage of locality of reference.
+It is not useful in places where we have operations like insert in the middle, delete from middle and search in a unsorted data.
+It is a fundamental and linear data structure using which we build other data structures like Stack Queue, Deque, Graph, Hash Table, etc.
+Introduction to Arrays
+Applications of Array
+Arrays in C
+Vector in C++ STL
+Arrays in Java
+ArrayList in Java
+List in Python
+Arrays in C#
+Arrays in JavaScript
+Print Alternates
+Leaders in an array
+Check if Sorted
+Remove Duplicates from Sorted
+Generate all Subarrays
+Reverse an Array
+Rotate an Array
+Zeroes to End
+Min Increments to Make Equal
+Min Cost to Make Size 1
+Duplicate within K Distance
+Make Even Positioned Greater
+Sum of all Subarrays
+Stock Buy and Sell – Multiple Transactions
+Single Among Doubles
+Missing Number
+Missing and Repeating
+Only Repeating from 1 to n-1
+Sorted Subsequence of Size 3
+Max Subarray Sum
+Equilibrium index
+Two Sum - Find if there is a Pair
+Two Sum - Closest Pair [More problems on 2 Sum in Medium Section]
+Split array into three equals
+Maximum Consecutive 1s with K Flips
+Binary Search
+Selection Sort, Insertion Sort, Binary Search, QuickSort, MergeSort, CycleSort, and HeapSort
+Sort in C++  /  Sort in Java / Sort in Python / Sort in JavaScript
+Two Pointers Technique
+Prefix Sum Technique
+Basics of Hashing
+Window Sliding Technique
+Make arr[i] = i
+Maximum Circular Subarray Sum
+Reorder according to given indexes
+Product Except Self
+K-th Largest Sum Subarray
+Smallest missing number
+Smallest subarray with sum greater than x
+Majority Element
+Count possible triangles
+Sub-array with given sum
+Longest Subarray with Equal 0s and 1s
+Longest Common Span in Two Binary Arrays
+Construct an array from its pair-sum array
+2 Sum - All Pairs
+2 Sum - Distinct Pairs
+3 Sum - Find Any
+3 Sum - Closest Triplet
+4 Sum - Find Any  [More problems on 4 Sum in Hard Section]
+Surpasser Count
+Trapping Rain Water
+Top K Frequent Elements
+Kth Missing Positive Number in a Sorted Array
+Stock Buy and Sell - At Most K Transactions
+Stock Buy and Sell - At Most 2 Transactions
+Median in a Stream
+Smallest Difference Triplet from 3 arrays
+Max occurred in n ranges
+3 Sum - Distinct Triplets
+3 Sum - All Triplets
+4 Sum - Distinct Quadruples
+4 Sum - All Quadruples
+4 Sum - Closest Quadruple
+MO’s Algorithm
+Square Root (Sqrt) Decomposition Algorithm
+Sparse Table
+Range sum query using Sparse Table
+Range Minimum Query (Square Root Decomposition and Sparse Table)
+Range LCM Queries
+Merge Sort Tree for Range Order Statistics
+Minimum number of jumps to reach end
+Space optimization using bit manipulations
+Max value of Sum( i*arr[i]) with only rotations allowed
+Quick Links :
+‘Practice Problems’ on Arrays
+Top Array Interview Questions
+‘Quizzes’ on Arrays
+H
+H
+DSA
+Arrays
+
+
