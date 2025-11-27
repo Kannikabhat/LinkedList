@@ -4,6 +4,7 @@ import { useState } from 'react';
 import SortingTMVisualization from '@/components/SortingTMVisualization';
 import { generateSortingTMSteps } from '@/lib/turing-machine';
 import type { VisualizationStep } from '@/lib/turing-machine';
+import ChatbotSidebar from '@/components/ChatbotSidebar';
 
 export default function SortingTMPage() {
   const [input, setInput] = useState('');
@@ -73,9 +74,12 @@ export default function SortingTMPage() {
       </div>
 
       {steps && (
+        <>
         <div className="mt-10">
           <SortingTMVisualization steps={steps} />
         </div>
+        <ChatbotSidebar />
+        </>
       )}
     </div>
   );

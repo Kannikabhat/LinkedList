@@ -16,7 +16,7 @@ const initialTopics: Topic[] = [
   
   { name: "Linked Lists", path: "/linkedlist", unlocked: true },
   { name: "Hashing", path: "/hashing", unlocked: true },
-
+  { name: "Sorting Turing Machine", path: "/sorting-tm", unlocked: true },
 ];
 
 const TopicsPage = () => {
